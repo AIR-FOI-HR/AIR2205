@@ -1,10 +1,10 @@
 package hr.foi.air.mbanking
 
 
-import android.app.PendingIntent.getActivity
+
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.foi.air.mbanking.databinding.LayoutUserAccountBinding
 import hr.foi.air.mbanking.entities.Account
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         initializeLayout()
+        onMenuPressed()
     }
 
     private fun mockUpDataForAccountAndTransactions(){
@@ -66,5 +67,12 @@ class MainActivity : AppCompatActivity() {
         transactionAdapter = TransactionAdapter(account.transakcije)
         binding.transactionsView.adapter = transactionAdapter
         binding.transactionsView.layoutManager = LinearLayoutManager(this)
+    }
+
+    fun onMenuPressed(){
+        binding.menuButton.setOnClickListener{
+            val intent1 = Intent(this, MenuActivity::class.java)
+            startActivity(intent1)
+        }
     }
 }

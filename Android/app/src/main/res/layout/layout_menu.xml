@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/grey">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_arrow_back"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Odabir opcije"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+
+
+
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPrikazRacuna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prikaz računa"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPlacanjeKarticom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Plaćanje karticom"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonKorisnikoviPrijenosi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Korisnikovi prijenosi"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSkenirajIPlati"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skeniraj i plati"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPlacanjePrekoBroja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Plaćanje preko mobilnog broja"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonIzvrseniNalozi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Izvršeni nalozi"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPostavke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Postavke korisničkog računa"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonObavijesti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obavijesti"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonPrikazBankomata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prikaz lokacija bankomata"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonOdjava"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Odjava"
+            android:backgroundTint="@color/grey"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

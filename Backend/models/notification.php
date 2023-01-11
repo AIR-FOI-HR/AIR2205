@@ -1,25 +1,25 @@
 <?php
 
-    class Account { 
+    class Notification { 
         function __construct() {
             $this->db = new DB();
         }
 
-        function get_accounts() {
-            $sql = "SELECT * FROM racun";
+        function get_notifications() {
+            $sql = "SELECT * FROM obavijest";
 
             $conn = $this->db->connect();
-            $accounts = $conn->query($sql);
+            $notifications = $conn->query($sql);
             $this->db->disconnect();
 
-            return $accounts;
+            return $notifications;
         }
 
-        function get_account($iban) {
+        function get_notification($obavijest_id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("SELECT * FROM racun WHERE iban = ?");
+            $stmt = $conn->prepare("SELECT * FROM obavijest WHERE obavijest_id = ?");
 
-            $stmt->bind_param("s", $iban);
+            $stmt->bind_param("s", $obavijest_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
@@ -33,10 +33,10 @@
             return $account;
         }
 
-        function create_account($iban, $stanje = 0.00, $aktivnost = 'D', $korisnik_id, $vrsta_racuna_id, $qr_kod = '') {
+        function create_notification($sadrzaj, $datum, $korisnik_id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("INSERT INTO racun (iban, stanje, aktivnost, korisnik_korisnik_id, vrsta_racuna_vrsta_racuna_id, qr_kod) VALUES (?,?,?,?,?,?)");
-            $stmt->bind_param("ssssss", $iban, $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod);
+            $stmt = $conn->prepare("INSERT INTO obavijest (sadrzaj, datum, korisnik_korisnik_id) VALUES (?,?,?)");
+            $stmt->bind_param("sss", $sadrzaj, $datum, $korisnik_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
@@ -49,19 +49,17 @@
             return true;
         }
 
-        function update_account($iban, $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod) { 
+        function update_notification($obavijest_id, $sadrzaj, $datum, $korisnik_id) { 
             $conn = $this->db->connect();
             $stmt = $conn->prepare(
-                                "UPDATE racun 
+                                "UPDATE obavijest 
                                 SET 
-                                    stanje = ?, 
-                                    aktivnost = ?, 
-                                    korisnik_korisnik_id = ?, 
-                                    vrsta_racuna_vrsta_racuna_id = ?, 
-                                    qr_kod = ? 
-                                WHERE iban = ?");
+                                    sadrzaj = ?,
+                                    datum = ?, 
+                                    korisnik_korisnik_id = ?
+                                WHERE obavijest_id = ?");
 
-            $stmt->bind_param("ssssss", $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod, $iban);
+            $stmt->bind_param("ssss",$sadrzaj, $datum, $korisnik_id, $obavijest_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
@@ -75,11 +73,11 @@
             return $response;
         }
 
-        function delete_account($iban) {
+        function delete_notification($obavijest_id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("DELETE FROM racun WHERE iban = ?");
+            $stmt = $conn->prepare("DELETE FROM obavijest WHERE obavijest_id = ?");
 
-            $stmt->bind_param("s", $iban);
+            $stmt->bind_param("s", $obavijest_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);

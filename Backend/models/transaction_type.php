@@ -1,25 +1,25 @@
 <?php
 
-    class Account { 
+    class Transaction_Type {
         function __construct() {
             $this->db = new DB();
         }
 
-        function get_accounts() {
-            $sql = "SELECT * FROM racun";
+        function get_transaction_types() {
+            $sql = "SELECT * FROM vrsta_transakcije";
 
             $conn = $this->db->connect();
-            $accounts = $conn->query($sql);
+            $transaction_types = $conn->query($sql);
             $this->db->disconnect();
 
-            return $accounts;
+            return $transaction_types;
         }
 
-        function get_account($iban) {
+        function get_transaction_type($transaction_type_id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("SELECT * FROM racun WHERE iban = ?");
+            $stmt = $conn->prepare("SELECT * FROM vrsta_transakcije WHERE vrsta_transakcije_id = ?");
 
-            $stmt->bind_param("s", $iban);
+            $stmt->bind_param("s", $transaction_type_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
@@ -27,16 +27,16 @@
                 return false;
             }
 
-            $account = $stmt->get_result();
+            $transaction_type = $stmt->get_result();
             $this->db->disconnect();
 
-            return $account;
+            return $transaction_type;
         }
 
-        function create_account($iban, $stanje = 0.00, $aktivnost = 'D', $korisnik_id, $vrsta_racuna_id, $qr_kod = '') {
+        function create_transaction_type($naziv) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("INSERT INTO racun (iban, stanje, aktivnost, korisnik_korisnik_id, vrsta_racuna_vrsta_racuna_id, qr_kod) VALUES (?,?,?,?,?,?)");
-            $stmt->bind_param("ssssss", $iban, $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod);
+            $stmt = $conn->prepare("INSERT INTO vrsta_transakcije (naziv) VALUES (?)");
+            $stmt->bind_param("s", $naziv);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
@@ -49,20 +49,15 @@
             return true;
         }
 
-        function update_account($iban, $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod) { 
+        function update_transaction_type($vrsta_transakcije_id, $naziv) { 
             $conn = $this->db->connect();
             $stmt = $conn->prepare(
-                                "UPDATE racun 
+                                "UPDATE vrsta_transakcije
                                 SET 
-                                    stanje = ?, 
-                                    aktivnost = ?, 
-                                    korisnik_korisnik_id = ?, 
-                                    vrsta_racuna_vrsta_racuna_id = ?, 
-                                    qr_kod = ? 
-                                WHERE iban = ?");
+                                    naziv = ?
+                                WHERE vrsta_transakcije_id = ?");
 
-            $stmt->bind_param("ssssss", $stanje, $aktivnost, $korisnik_id, $vrsta_racuna_id, $qr_kod, $iban);
-
+            $stmt->bind_param("ss", $naziv, $vrsta_transakcije_id);
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);
                 die();
@@ -75,11 +70,11 @@
             return $response;
         }
 
-        function delete_account($iban) {
+        function delete_transaction_type($vrsta_transakcije_id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("DELETE FROM racun WHERE iban = ?");
+            $stmt = $conn->prepare("DELETE FROM vrsta_transakcije WHERE vrsta_transakcije_id = ?");
 
-            $stmt->bind_param("s", $iban);
+            $stmt->bind_param("s", $vrsta_transakcije_id);
 
             if (!$stmt->execute()) {
                 trigger_error("Error executing query: " . $stmt->error);

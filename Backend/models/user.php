@@ -6,7 +6,7 @@
         }
 
         function get_users() {
-            $sql = "SELECT * from korisnik";
+            $sql = "SELECT * FROM korisnik";
 
             $conn = $this->db->connect();
             $users = $conn->query($sql);
@@ -17,7 +17,7 @@
 
         function get_user($id) {
             $conn = $this->db->connect();
-            $stmt = $conn->prepare("SELECT * from korisnik WHERE korisnik_id = ?");
+            $stmt = $conn->prepare("SELECT * FROM korisnik WHERE korisnik_id = ?");
 
             $stmt->bind_param("s", $id);
 

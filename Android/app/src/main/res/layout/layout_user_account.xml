@@ -61,9 +61,9 @@
 
             <ImageView
                 android:id="@+id/profilePicture"
-                android:contentDescription="profilna slika korisnika"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
+                android:contentDescription="profilna slika korisnika"
                 android:paddingLeft="20dp"
                 android:src="@mipmap/ic_launcher" />
 

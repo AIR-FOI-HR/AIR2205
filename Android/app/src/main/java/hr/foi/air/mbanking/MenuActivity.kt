@@ -18,20 +18,11 @@ class MenuActivity : AppCompatActivity() {
 
         setContentView(view)
         onBackArrowPressed()
-        onLogout()
     }
 
     fun onBackArrowPressed(){
         binding.buttonBack.setOnClickListener(){
             finish()
-        }
-    }
-
-    fun onLogout() {
-        binding.buttonOdjava.setOnClickListener {
-            val registerView = Intent(this, RegistrationActivity::class.java)
-
-            startActivity(registerView)
         }
     }
 }

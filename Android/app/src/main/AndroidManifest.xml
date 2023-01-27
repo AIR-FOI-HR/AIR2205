@@ -39,6 +39,9 @@
         <activity
             android:name="foi.projekt.skeniraj_i_plati.QRCodeActivity">
         </activity>
+        <activity
+            android:name=".GenerateCodeActivity">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

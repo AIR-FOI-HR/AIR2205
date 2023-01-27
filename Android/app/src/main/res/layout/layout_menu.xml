@@ -80,6 +80,13 @@
             android:backgroundTint="@color/grey"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonGenerirajQrKod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generiranje QR koda"
+            android:backgroundTint="@color/grey"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPlacanjePrekoBroja"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

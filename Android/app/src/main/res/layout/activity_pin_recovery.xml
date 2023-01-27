@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvOporavakPina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="Oporavak PINa"
+            android:textSize="24sp"
+            android:layout_marginTop="50dp" />
+
+        <EditText
+            android:id="@+id/etRecoveryCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:hint="Unesite kod za oporavak" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="U redu"
+            android:backgroundTint="@color/grey"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="Unos novog PINa"
+            android:textSize="24sp"
+            android:layout_marginTop="50dp" />
+
+        <EditText
+            android:id="@+id/etNewPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:hint="Unesite novi PIN" />
+
+        <EditText
+            android:id="@+id/etNewPinConfirmed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Potvrdite novi PIN" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="U redu"
+            android:backgroundTint="@color/grey"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

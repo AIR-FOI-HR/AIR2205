@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import hr.foi.air.mbanking.LogInActivity.Companion.currentUser
 import hr.foi.air.mbanking.databinding.LayoutUserAccountBinding
 import hr.foi.air.mbanking.entities.Account
 import hr.foi.air.mbanking.entities.Transaction
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun initializeLayout(){
-        binding.username.text = "Dobrodošli ".plus(account.username)
+        binding.username.text = "Dobrodošli ".plus(currentUser?.ime).plus(" ").plus(currentUser?.prezime)
         binding.accountDetails.text = account.vrstaRacuna
             .plus(" račun")
             .plus("\n")

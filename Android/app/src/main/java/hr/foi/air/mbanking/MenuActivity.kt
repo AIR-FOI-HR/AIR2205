@@ -22,11 +22,20 @@ class MenuActivity : AppCompatActivity() {
 
         onBackArrowPressed()
         onSkenirajIPlatiPressed()
+        onGeneriranjeQrKodaPressed()
     }
 
     fun onSkenirajIPlatiPressed(){
         binding.buttonSkenirajIPlati.setOnClickListener{
             val intent1 = Intent(this, QRScanActivity::class.java)
+            intent1.putExtra("GlavniRacun", glavniRacun)
+            startActivity(intent1)
+        }
+    }
+
+    fun onGeneriranjeQrKodaPressed(){
+        binding.buttonGenerirajQrKod.setOnClickListener{
+            val intent1 = Intent(this, GenerateCodeActivity::class.java)
             intent1.putExtra("GlavniRacun", glavniRacun)
             startActivity(intent1)
         }

@@ -77,9 +77,9 @@ class MainActivity : AppCompatActivity() {
 
 
             }
-            else{
-                binding.accountDetails.text = "Nema aktivnog računa"
-            }
+        }
+        if(binding.accountDetails.text == ""){
+            binding.accountDetails.text = "Nema aktivnog računa"
         }
 
         var listaTransakcija = mutableListOf<Transaction>()

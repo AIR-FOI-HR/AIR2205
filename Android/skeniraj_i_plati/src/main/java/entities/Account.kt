@@ -1,4 +1,4 @@
-package hr.foi.air.mbanking.entities
+package entities
 
 data class Account(
     var iban: String,

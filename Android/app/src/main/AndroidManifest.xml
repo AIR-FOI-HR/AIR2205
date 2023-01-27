@@ -13,8 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MBanking"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".PostRegistrationActivity"
             android:exported="false">
@@ -49,6 +49,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name="foi.projekt.skeniraj_i_plati.QRScanActivity" >
+        </activity>
+        <activity
+            android:name="foi.projekt.skeniraj_i_plati.QRCodeActivity">
+        </activity>
+        <activity
+            android:name=".GenerateCodeActivity">
+        </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

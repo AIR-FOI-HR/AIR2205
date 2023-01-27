@@ -4,6 +4,7 @@ package hr.foi.air.mbanking
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import foi.projekt.skeniraj_i_plati.QRScanActivity
 import hr.foi.air.mbanking.databinding.LayoutMenuBinding
 
@@ -40,7 +41,6 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent1)
         }
     }
-
 
     fun onBackArrowPressed(){
         binding.buttonBack.setOnClickListener(){

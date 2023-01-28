@@ -8,6 +8,7 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import hr.foi.air.mbanking.LogInActivity.Companion.currentUser
 import hr.foi.air.mbanking.databinding.LayoutUserAccountBinding
 import hr.foi.air.mbanking.entities.Transaction
 import hr.foi.air.mbanking.transactionRecyclerView.TransactionAdapter
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initializeLayout(){
+
         val id = 2
         val trenutniKorisnik = getData("http://20.67.25.104/mBankingAPI/api/user/get.php?id=".plus(id))
         binding.username.text = "Dobrodošli ".plus(trenutniKorisnik.getJSONObject(0).getString("ime"))

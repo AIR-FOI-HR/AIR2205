@@ -22,6 +22,8 @@ class MenuActivity : AppCompatActivity() {
         glavniRacun = intent.getStringExtra("GlavniRacun").toString()
 
         onBackArrowPressed()
+
+        onLogout()
         onSkenirajIPlatiPressed()
         onGeneriranjeQrKodaPressed()
     }
@@ -45,6 +47,12 @@ class MenuActivity : AppCompatActivity() {
     fun onBackArrowPressed(){
         binding.buttonBack.setOnClickListener(){
             finish()
+        }
+    }
+    fun onLogout() {
+        binding.buttonOdjava.setOnClickListener {
+            val logInView = Intent(this, LogInActivity::class.java)
+            startActivity(logInView)
         }
     }
 }

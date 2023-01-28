@@ -5,8 +5,8 @@ data class User(
     val ime: String,
     val prezime: String,
     val email: String,
-    val adresa: String,
-    val mobitel: String,
-    val pin: String,
-    val kod_za_oporavak: String
+    var adresa: String,
+    var mobitel: String,
+    var pin: String,
+    var kod_za_oporavak: String
 )

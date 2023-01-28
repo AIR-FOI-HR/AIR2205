@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import hr.foi.air.mbanking.entities.User
 import hr.foi.air.mbanking.exceptions.HttpRequestFailureException
+
+import okhttp3.*
 import hr.foi.air.mbanking.exceptions.LoginFailureException
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -18,6 +20,7 @@ class UserRequest {
 
     fun getAllUsers(): List<User> {
         val gson = Gson()
+
 
         val url = "http://20.67.25.104/mBankingAPI/api/user/get_all.php"
         val request = Request.Builder()
@@ -34,6 +37,7 @@ class UserRequest {
 
         return users
     }
+
 
     fun getUser(id: Int) : User? {
         val gson = Gson()
@@ -62,6 +66,7 @@ class UserRequest {
 
         return user
     }
+
 
     fun logInUser(email: String, pin: String) : User? {
 
@@ -116,6 +121,39 @@ class UserRequest {
             throw HttpRequestFailureException("Pogreška kod slanja podataka")
 
         return response.code
-    }
+     }
+     
+     fun createUser(
+        ime: String,
+        prezime: String,
+        email: String,
+        pin: String,
+    ): String? {
+        val jsonObject = JSONObject()
+        jsonObject.put("ime", ime)
+        jsonObject.put("prezime", prezime)
+        jsonObject.put("email", email)
+        jsonObject.put("adresa", "")
+        jsonObject.put("mobitel", "")
+        jsonObject.put("pin", pin)
 
+        val jsonObjectString = jsonObject.toString()
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        val url = "http://20.67.25.104/mBankingAPI/api/user/create.php";
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val response = client.newCall(request).execute()
+        val responseString = response.body?.string()
+        val jsonResponse = JSONArray(responseString)
+        val recoveryCode = jsonResponse.getJSONObject(0).getString("kod_za_oporavak")
+
+        if (!response.isSuccessful) throw HttpRequestFailureException("Pogreška kod slanja podataka")
+
+        return recoveryCode
+    }
+     
 }

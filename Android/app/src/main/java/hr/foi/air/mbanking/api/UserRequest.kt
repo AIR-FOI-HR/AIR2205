@@ -19,7 +19,7 @@ class UserRequest {
     fun getAllUsers(): List<User> {
         val gson = Gson()
 
-        val url = "http://20.67.25.104/mBankingAPI/api/user/get_all.php";
+        val url = "http://20.67.25.104/mBankingAPI/api/user/get_all.php"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -87,6 +87,35 @@ class UserRequest {
         val user = result[0]
 
         return user
+    }
+
+    fun updateUser(korisnik_id: Int, ime: String, prezime: String, email: String, adresa: String, mobitel: String, pin: String, kod_za_oporavak: String): Int{
+        val jsonObject = JSONObject()
+        jsonObject.put("korisnik_id", korisnik_id)
+        jsonObject.put("ime", ime)
+        jsonObject.put("prezime", prezime)
+        jsonObject.put("email", email)
+        jsonObject.put("adresa", adresa)
+        jsonObject.put("mobitel", mobitel)
+        jsonObject.put("pin", pin)
+        jsonObject.put("kod_za_oporavak", kod_za_oporavak)
+
+        val jsonObjectString = jsonObject.toString()
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        val url = "http://20.67.25.104/mBankingAPI/api/user/update.php"
+
+        val request = Request.Builder()
+            .url(url)
+            .put(requestBody)
+            .build()
+
+        val response = client.newCall(request).execute()
+
+        if(!response.isSuccessful)
+            throw HttpRequestFailureException("Pogreška kod slanja podataka")
+
+        return response.code
     }
 
 }

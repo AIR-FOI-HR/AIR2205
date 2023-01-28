@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class LogInActivity : AppCompatActivity()
 {
-    val userRequest = UserRequest()
+    private val userRequest = UserRequest()
 
     private lateinit var binding: ActivityLogInBinding
 
@@ -32,18 +32,17 @@ class LogInActivity : AppCompatActivity()
 
         onLogInPressed()
         onPinRecoveryPressed()
-
     }
 
-    fun onLogInPressed() {
+    private fun onLogInPressed() {
         binding.btnLogIn.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO){
-                var user = userRequest.logInUser(binding.etEmail.text.toString(), binding.etPIN.text.toString())
+                val user = userRequest.logInUser(binding.etEmail.text.toString(), binding.etPIN.text.toString())
                 withContext(Dispatchers.Main){
                     if(user != null) {
                         currentUser = user
-                        val MainView = Intent(this@LogInActivity, MainActivity::class.java)
-                        startActivity(MainView)
+                        val mainView = Intent(this@LogInActivity, MainActivity::class.java)
+                        startActivity(mainView)
                     }
                     else {
                         Toast.makeText(this@LogInActivity, "Netočno ime ili lozinka", Toast.LENGTH_SHORT).show()
@@ -53,7 +52,7 @@ class LogInActivity : AppCompatActivity()
         }
     }
 
-    fun onPinRecoveryPressed()
+    private fun onPinRecoveryPressed()
     {
         binding.tvPinRecovery.setOnClickListener {
             val pinRecovery = Intent(this, PinRecoveryActivity::class.java)

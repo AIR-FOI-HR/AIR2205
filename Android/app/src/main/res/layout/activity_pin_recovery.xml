@@ -21,10 +21,17 @@
             android:layout_marginTop="50dp" />
 
         <EditText
-            android:id="@+id/etRecoveryCode"
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:hint="Unesite vaš email" />
+
+        <EditText
+            android:id="@+id/etRecoveryCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:hint="Unesite kod za oporavak" />
 
         <com.google.android.material.button.MaterialButton
@@ -37,6 +44,7 @@
             android:backgroundTint="@color/grey"/>
 
         <TextView
+            android:id="@+id/tvUnosNovogPINa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
@@ -45,14 +53,14 @@
             android:layout_marginTop="50dp" />
 
         <EditText
-            android:id="@+id/etNewPin"
+            android:id="@+id/etNewPIN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:hint="Unesite novi PIN" />
 
         <EditText
-            android:id="@+id/etNewPinConfirmed"
+            android:id="@+id/etNewPINConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

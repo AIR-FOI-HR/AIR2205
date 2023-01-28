@@ -32,6 +32,7 @@ class LogInActivity : AppCompatActivity()
 
         onLogInPressed()
         onPinRecoveryPressed()
+        onRegisterPressed()
     }
 
     private fun onLogInPressed() {
@@ -52,13 +53,20 @@ class LogInActivity : AppCompatActivity()
         }
     }
 
-    private fun onPinRecoveryPressed()
-    {
+    private fun onPinRecoveryPressed() {
         binding.tvPinRecovery.setOnClickListener {
             val pinRecovery = Intent(this, PinRecoveryActivity::class.java)
             startActivity(pinRecovery)
         }
     }
+
+    private fun onRegisterPressed(){
+        binding.btnRegistration.setOnClickListener(){
+            val registrationActivity = Intent(this, RegistrationActivity::class.java)
+            startActivity(registrationActivity)
+        }
+    }
+
 
 
 }

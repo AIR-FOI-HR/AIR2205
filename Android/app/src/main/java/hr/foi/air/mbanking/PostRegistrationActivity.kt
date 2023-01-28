@@ -1,5 +1,6 @@
 package hr.foi.air.mbanking
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import hr.foi.air.mbanking.databinding.ActivityPostRegistrationBinding
@@ -16,5 +17,14 @@ class PostRegistrationActivity : AppCompatActivity() {
 
         val recoveryCode = intent.getStringExtra("recoveryCode")
         binding.tvRecoveryCodeMsg.setText(recoveryCode.toString())
+
+        onLoginPressed()
+    }
+
+    private fun onLoginPressed(){
+        binding.btnLogin.setOnClickListener(){
+            val logInActivity = Intent(this, LogInActivity::class.java)
+            startActivity(logInActivity)
+        }
     }
 }

@@ -5,13 +5,13 @@ import com.google.gson.reflect.TypeToken
 import hr.foi.air.mbanking.entities.User
 import hr.foi.air.mbanking.exceptions.HttpRequestFailureException
 
-import okhttp3.*
 import hr.foi.air.mbanking.exceptions.LoginFailureException
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 
 class UserRequest {

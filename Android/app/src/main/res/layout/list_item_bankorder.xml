@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:id="@+id/datetime"
+        android:gravity="center"
+        tools:text="name"/>
+
+    <TextView
+        android:id="@+id/nameandsurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toEndOf="@id/datetime"
+        android:textColor="@color/black"
+        tools:text="name" />
+
+    <TextView
+        android:id="@+id/accountiban"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameandsurname"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toEndOf="@id/datetime"
+        android:textColor="@color/black"
+        tools:text="iban_racun" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/accountiban"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toEndOf="@id/datetime"
+        android:textColor="@color/black"
+        tools:text="opis" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_marginEnd="2dp"
+        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toEndOf="@id/datetime"
+        android:textColor="@color/black"
+        tools:text="iznos" />
+
+    <ImageButton
+        android:id="@+id/imagebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:contentDescription="tipka koja ima ikonu"
+        android:src="@drawable/ic_showcase_details" />
+
+</RelativeLayout>

@@ -1,7 +1,5 @@
 package hr.foi.air.mbanking
 
-
-
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
@@ -18,7 +16,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.IOException
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,10 +89,10 @@ class MainActivity : AppCompatActivity() {
             if(racunIBAN == transakcija.getString("iban")){
                 val vrsta = getData("http://20.67.25.104/mBankingAPI/api/transaction_type/get.php?id=".plus(transakcija.getInt("vrsta_transakcije_id")))
                 val valuta = getData("http://20.67.25.104/mBankingAPI/api/currency/get.php?id=".plus(transakcija.getInt("valuta_id")))
+                // I DONT KNOW WHAT THE FUCK THIS DOES
+                //val sadrzaj = Transaction(vrsta.getJSONObject(0).getString("naziv"), transakcija.getDouble("iznos") , valuta.getJSONObject(0).getString("oznaka"), " ")
 
-                val sadrzaj = Transaction(vrsta.getJSONObject(0).getString("naziv"), transakcija.getDouble("iznos") , valuta.getJSONObject(0).getString("oznaka"))
-
-                listaTransakcija.add(sadrzaj)
+                //listaTransakcija.add(transakcija)
             }
         }
 

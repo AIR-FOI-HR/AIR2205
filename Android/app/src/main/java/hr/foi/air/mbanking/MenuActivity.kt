@@ -22,10 +22,10 @@ class MenuActivity : AppCompatActivity() {
         glavniRacun = intent.getStringExtra("GlavniRacun").toString()
 
         onBackArrowPressed()
-
         onLogout()
         onSkenirajIPlatiPressed()
         onGeneriranjeQrKodaPressed()
+        onBankOrderPressed()
     }
 
     fun onSkenirajIPlatiPressed(){
@@ -39,7 +39,7 @@ class MenuActivity : AppCompatActivity() {
     fun onGeneriranjeQrKodaPressed(){
         binding.buttonGenerirajQrKod.setOnClickListener{
             val intent1 = Intent(this, GenerateCodeActivity::class.java)
-            intent1.putExtra("GlavniRacun", glavniRacun)
+            //intent1.putExtra("GlavniRacun", glavniRacun)
             startActivity(intent1)
         }
     }
@@ -53,6 +53,12 @@ class MenuActivity : AppCompatActivity() {
         binding.buttonOdjava.setOnClickListener {
             val logInView = Intent(this, LogInActivity::class.java)
             startActivity(logInView)
+        }
+    }
+    fun onBankOrderPressed(){
+        binding.buttonIzvrseniNalozi.setOnClickListener{
+            val bankOrderView = Intent(this, BankOrderListActivity::class.java)
+            startActivity(bankOrderView)
         }
     }
 }

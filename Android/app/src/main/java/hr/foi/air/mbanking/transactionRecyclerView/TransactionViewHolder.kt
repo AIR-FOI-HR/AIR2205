@@ -11,6 +11,6 @@ class TransactionViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView)
     var transactionName = itemView.findViewById<TextView>(R.id.transaction)
 
     fun bindDataToView(transaction: Transaction){
-        transactionName?.text = transaction.opis.plus("    ").plus(transaction.iznos.toString()).plus(" ").plus(transaction.valuta)
+        transactionName?.text = transaction.opis_placanja.plus("    ").plus(transaction.iznos.toString()).plus(" ").plus(transaction.valuta_id)
     }
 }

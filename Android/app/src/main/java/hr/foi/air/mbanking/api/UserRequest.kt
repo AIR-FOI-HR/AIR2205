@@ -21,7 +21,6 @@ class UserRequest {
     fun getAllUsers(): List<User> {
         val gson = Gson()
 
-
         val url = "http://20.67.25.104/mBankingAPI/api/user/get_all.php"
         val request = Request.Builder()
             .url(url)

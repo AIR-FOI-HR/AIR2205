@@ -17,7 +17,7 @@ class AccountRequest {
     fun getAllAccounts(): List<Account>{
         val gson = Gson()
 
-        val url = "http://20.67.25.104/mBankingAPI/api/account/get_all.php"
+        val url = "http://3.72.75.217/mBankingAPI/api/account/get_all.php"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -37,7 +37,7 @@ class AccountRequest {
         val gson = Gson()
         val url = HttpUrl.Builder()
             .scheme("http")
-            .host("20.67.25.104")
+            .host("3.72.75.217")
             .addPathSegment("mBankingAPI")
             .addPathSegment("api")
             .addPathSegment("account")

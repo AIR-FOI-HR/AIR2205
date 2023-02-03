@@ -19,6 +19,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".BankOrderActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BankOrderListActivity"
             android:exported="false">
             <meta-data
@@ -79,9 +86,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name="foi.projekt.skeniraj_i_plati.QRScanActivity"></activity>
-        <activity android:name="foi.projekt.skeniraj_i_plati.QRCodeActivity"></activity>
-        <activity android:name=".GenerateCodeActivity"></activity>
+        <activity android:name="foi.projekt.skeniraj_i_plati.QRScanActivity" />
+        <activity android:name="foi.projekt.skeniraj_i_plati.QRCodeActivity" />
+        <activity android:name=".GenerateCodeActivity" />
     </application>
 
 </manifest>

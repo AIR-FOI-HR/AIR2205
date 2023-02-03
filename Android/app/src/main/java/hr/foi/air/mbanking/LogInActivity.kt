@@ -39,7 +39,6 @@ class LogInActivity : AppCompatActivity()
         binding.btnLogIn.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO){
                 val user = userRequest.logInUser(binding.etEmail.text.toString(), binding.etPIN.text.toString())
-                withContext(Dispatchers.Main){
                     if(user != null) {
                         currentUser = user
                         val mainView = Intent(this@LogInActivity, MainActivity::class.java)
@@ -47,7 +46,7 @@ class LogInActivity : AppCompatActivity()
                     }
                     else {
                         Toast.makeText(this@LogInActivity, "Netočno ime ili lozinka", Toast.LENGTH_SHORT).show()
-                    }
+
                 }
             }
         }

@@ -54,18 +54,18 @@ class MainActivity : AppCompatActivity() {
     fun initializeLayout(){
 
         val id = 2
-        val trenutniKorisnik = getData("http://20.67.25.104/mBankingAPI/api/user/get.php?id=".plus(id))
+        val trenutniKorisnik = getData("http://3.72.75.217/mBankingAPI/api/user/get.php?id=".plus(id))
         binding.username.text = "Dobrodošli ".plus(trenutniKorisnik.getJSONObject(0).getString("ime"))
 
         var racunIBAN = ""
-        val racuni = getData("http://20.67.25.104/mBankingAPI/api/account/get_all.php")
+        val racuni = getData("http://3.72.75.217/mBankingAPI/api/account/get_all.php")
         for(i in 0 until racuni.length()){
             val racun = racuni.getJSONObject(i)
             if(racun.getInt("korisnik_id") == id){
                 racunIBAN = racun.getString("iban")
                 glavniRacun = racun
                 val idVrsteRacuna = racun.getInt("vrsta_racuna_id")
-                val vrstaRacuna = getData("http://20.67.25.104/mBankingAPI/api/account_type/get.php?id=".plus(idVrsteRacuna))
+                val vrstaRacuna = getData("http://3.72.75.217/mBankingAPI/api/account_type/get.php?id=".plus(idVrsteRacuna))
 
                 binding.accountDetails.text = vrstaRacuna.getJSONObject(0).getString("naziv")
                     .plus("\n")
@@ -82,13 +82,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         var listaTransakcija = mutableListOf<Transaction>()
-        val sveTransakcije = getData("http://20.67.25.104/mBankingAPI/api/transaction/get_all.php")
+        val sveTransakcije = getData("http://3.72.75.217/mBankingAPI/api/transaction/get_all.php")
         for(i in 0 until sveTransakcije.length()){
             val transakcija = sveTransakcije.getJSONObject(i)
 
             if(racunIBAN == transakcija.getString("iban")){
-                val vrsta = getData("http://20.67.25.104/mBankingAPI/api/transaction_type/get.php?id=".plus(transakcija.getInt("vrsta_transakcije_id")))
-                val valuta = getData("http://20.67.25.104/mBankingAPI/api/currency/get.php?id=".plus(transakcija.getInt("valuta_id")))
+                val vrsta = getData("http://3.72.75.217/mBankingAPI/api/transaction_type/get.php?id=".plus(transakcija.getInt("vrsta_transakcije_id")))
+                val valuta = getData("http://3.72.75.217/mBankingAPI/api/currency/get.php?id=".plus(transakcija.getInt("valuta_id")))
                 // I DONT KNOW WHAT THE FUCK THIS DOES
                 //val sadrzaj = Transaction(vrsta.getJSONObject(0).getString("naziv"), transakcija.getDouble("iznos") , valuta.getJSONObject(0).getString("oznaka"), " ")
 

@@ -21,7 +21,7 @@ class UserRequest {
     fun getAllUsers(): List<User> {
         val gson = Gson()
 
-        val url = "http://20.67.25.104/mBankingAPI/api/user/get_all.php"
+        val url = "http://3.72.75.217/mBankingAPI/api/user/get_all.php"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -42,7 +42,7 @@ class UserRequest {
         val gson = Gson()
         val url = HttpUrl.Builder()
             .scheme("http")
-            .host("20.67.25.104")
+            .host("3.72.75.217")
             .addPathSegment("mBankingAPI")
             .addPathSegment("api")
             .addPathSegment("user")
@@ -78,7 +78,7 @@ class UserRequest {
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
         val request = Request.Builder()
-            .url("http://20.67.25.104/mBankingAPI/api/user/login.php")
+            .url("http://3.72.75.217/mBankingAPI/api/user/login.php")
             .post(requestBody)
             .build()
 
@@ -107,7 +107,7 @@ class UserRequest {
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
-        val url = "http://20.67.25.104/mBankingAPI/api/user/update.php"
+        val url = "http://3.72.75.217/mBankingAPI/api/user/update.php"
 
         val request = Request.Builder()
             .url(url)
@@ -139,7 +139,7 @@ class UserRequest {
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
-        val url = "http://20.67.25.104/mBankingAPI/api/user/create.php";
+        val url = "http://3.72.75.217/mBankingAPI/api/user/create.php";
         val request = Request.Builder()
             .url(url)
             .post(requestBody)

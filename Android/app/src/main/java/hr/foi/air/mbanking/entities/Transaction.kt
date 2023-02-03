@@ -7,7 +7,7 @@ data class Transaction(
     var model: String,
     var poziv_na_broj: String,
     var datum_izvrsenja: String,
-    var vrsta_transakcije_vrsta_transakcije_id: Int,
+    var vrsta_transakcije_id: Int,
     var iban: String,
     var valuta_id: Int
 )

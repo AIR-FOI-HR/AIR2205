@@ -1,7 +1,9 @@
 package hr.foi.air.mbanking
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.foi.air.mbanking.LogInActivity.Companion.currentUser
@@ -29,17 +31,14 @@ class BankOrderListActivity : AppCompatActivity() {
 
         binding = ActivityBankOrderListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initializeLayout(0)
         onBackArrowPressed()
         onTekuciRacunButtonPressed()
         onZiroRacunButtonPressed()
-        binding.bankOrderView.
     }
 
     fun initializeLayout(id: Int){
         var currentUserTransactionList = mutableListOf<Transaction>()
-        //currentUserTransactionList.add(Transaction(122.00, "Kurac", "Kurac 2", "Kurac 3", "229123", 1, "1", 1))
         lifecycleScope.launch(Dispatchers.IO){
             val userAccountList = getUserAccounts(currentUser!!.korisnik_id)
             val currentUserAccount = userAccountList[id]
@@ -61,6 +60,21 @@ class BankOrderListActivity : AppCompatActivity() {
                 bankOrderAdapter = BankOrderAdapter(currentUserTransactionList)
                 binding.bankOrderView.adapter = bankOrderAdapter
                 binding.bankOrderView.layoutManager = LinearLayoutManager(this@BankOrderListActivity)
+                bankOrderAdapter.setOnButtonCLickListener(object : BankOrderAdapter.onItemClickListener{
+                    override fun onItemClick(position: Int) {
+                        val intent = Intent(this@BankOrderListActivity, BankOrderActivity::class.java)
+                        intent.putExtra("transakcijaId", currentUserTransactionList[position].transakcija_id)
+                        intent.putExtra("iznos", currentUserTransactionList[position].iznos.toString())
+                        intent.putExtra("opisPlacanja", currentUserTransactionList[position].opis_placanja)
+                        intent.putExtra("model", currentUserTransactionList[position].model)
+                        intent.putExtra("pozivNaBroj", currentUserTransactionList[position].poziv_na_broj)
+                        intent.putExtra("datumIzvrsenja", currentUserTransactionList[position].datum_izvrsenja)
+                        intent.putExtra("vrstaTransakcije", currentUserTransactionList[position].vrsta_transakcije_id)
+                        intent.putExtra("racunIban", currentUserTransactionList[position].iban)
+                        intent.putExtra("valuta", currentUserTransactionList[position].valuta_id)
+                        startActivity(intent)
+                    }
+                })
             }
         }
     }
@@ -91,9 +105,5 @@ class BankOrderListActivity : AppCompatActivity() {
         binding.btnZiroRacun.setOnClickListener(){
             initializeLayout(1)
         }
-    }
-
-    fun onRecyclerViewButtonPressed(){
-        binding.bankOrderView.
     }
 }

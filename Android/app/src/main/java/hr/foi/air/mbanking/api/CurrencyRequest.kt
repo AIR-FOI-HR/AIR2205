@@ -2,20 +2,20 @@ package hr.foi.air.mbanking.api
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import hr.foi.air.mbanking.entities.Transaction
+import hr.foi.air.mbanking.entities.Currency
 import hr.foi.air.mbanking.exceptions.HttpRequestFailureException
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class TransactionRequest {
+class CurrencyRequest {
 
     val client = OkHttpClient()
 
-    fun getAllTransactions(): List<Transaction>{
+    fun getAllCurrencies(): List<Currency>{
         val gson = Gson()
 
-        val url = "http://3.72.75.217/mBankingAPI/api/transaction/get_all.php"
+        val url = "http://3.72.75.217/mBankingAPI/api/currency/get_all.php"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -25,19 +25,19 @@ class TransactionRequest {
         if (!response.isSuccessful) throw HttpRequestFailureException("Pogreška kod dohvata liste transakcija!")
 
         val responseString = response.body?.string()
-        val itemType = object : TypeToken<List<Transaction>>() {}.type
-        val transactions = gson.fromJson<List<Transaction>>(responseString, itemType)
+        val itemType = object : TypeToken<List<Currency>>() {}.type
+        val currencies = gson.fromJson<List<Currency>>(responseString, itemType)
 
-        return transactions
+        return currencies
     }
-    fun getTransaction(id: Int) : Transaction? {
+    fun getCurrency(id: Int) : Currency? {
         val gson = Gson()
         val url = HttpUrl.Builder()
             .scheme("http")
             .host("3.72.75.217")
             .addPathSegment("mBankingAPI")
             .addPathSegment("api")
-            .addPathSegment("transaction")
+            .addPathSegment("currency")
             .addPathSegment("get_all.php")
             .addQueryParameter("id", id.toString())
             .build()
@@ -51,10 +51,10 @@ class TransactionRequest {
         if (!response.isSuccessful) throw HttpRequestFailureException("Pogrešan unos podataka!")
 
         val responseString = response.body?.string()
-        val itemType = object : TypeToken<List<Transaction>>() {}.type
-        val result = gson.fromJson<List<Transaction>>(responseString, itemType)
-        val transaction = result[0]
+        val itemType = object : TypeToken<List<Currency>>() {}.type
+        val result = gson.fromJson<List<Currency>>(responseString, itemType)
+        val currency = result[0]
 
-        return transaction
+        return currency
     }
 }

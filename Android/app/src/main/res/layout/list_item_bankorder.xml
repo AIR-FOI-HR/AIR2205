@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
-        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toStartOf="@+id/imageButton"
         android:layout_toEndOf="@id/datetime"
         android:textColor="@color/black"
         tools:text="name" />
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nameandsurname"
         android:layout_marginEnd="2dp"
-        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toStartOf="@+id/imageButton"
         android:layout_toEndOf="@id/datetime"
         android:textColor="@color/black"
         tools:text="iban_racun" />
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/accountiban"
         android:layout_marginEnd="2dp"
-        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toStartOf="@+id/imageButton"
         android:layout_toEndOf="@id/datetime"
         android:textColor="@color/black"
         tools:text="opis" />
@@ -51,13 +51,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
         android:layout_marginEnd="2dp"
-        android:layout_toStartOf="@+id/imagebutton"
+        android:layout_toStartOf="@+id/imageButton"
         android:layout_toEndOf="@id/datetime"
         android:textColor="@color/black"
         tools:text="iznos" />
 
     <ImageButton
-        android:id="@+id/imagebutton"
+        android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -86,15 +86,15 @@
 
             <ImageButton
                 android:id="@+id/buttonShareTransaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="75dp"
-                android:src="@drawable/ic_showcase_details" />
+                android:background="@drawable/ic_share_button" />
 
             <ImageButton
                 android:id="@+id/buttonCopyTransaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:contentDescription="tipka koja ima ikonu"
                 android:src="@drawable/ic_showcase_details" />
 

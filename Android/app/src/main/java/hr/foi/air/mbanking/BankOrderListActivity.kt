@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 
 class BankOrderListActivity : AppCompatActivity() {
 
-
     val transactionRequest = TransactionRequest()
     val accountRequest = AccountRequest()
 
@@ -63,7 +62,7 @@ class BankOrderListActivity : AppCompatActivity() {
                 bankOrderAdapter.setOnButtonCLickListener(object : BankOrderAdapter.onItemClickListener{
                     override fun onItemClick(position: Int) {
                         val intent = Intent(this@BankOrderListActivity, BankOrderActivity::class.java)
-                        intent.putExtra("transakcijaId", currentUserTransactionList[position].transakcija_id)
+                        intent.putExtra("transakcijaId", currentUserTransactionList[position].transakcija_id.toString())
                         intent.putExtra("iznos", currentUserTransactionList[position].iznos.toString())
                         intent.putExtra("opisPlacanja", currentUserTransactionList[position].opis_placanja)
                         intent.putExtra("model", currentUserTransactionList[position].model)

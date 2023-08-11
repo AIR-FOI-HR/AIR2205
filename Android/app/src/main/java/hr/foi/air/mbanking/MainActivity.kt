@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import hr.foi.air.mbanking.LogInActivity.Companion.currentUser
 import hr.foi.air.mbanking.databinding.LayoutUserAccountBinding
 import hr.foi.air.mbanking.entities.Transaction
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             binding.accountDetails.text = "Nema aktivnog računa"
         }
 
-        var listaTransakcija = mutableListOf<Transaction>()
+        /*var listaTransakcija = mutableListOf<Transaction1>()
         val sveTransakcije = getData("http://3.72.75.217/mBankingAPI/api/transaction/get_all.php")
         for(i in 0 until sveTransakcije.length()){
             val transakcija = sveTransakcije.getJSONObject(i)
@@ -90,15 +89,14 @@ class MainActivity : AppCompatActivity() {
                 val vrsta = getData("http://3.72.75.217/mBankingAPI/api/transaction_type/get.php?id=".plus(transakcija.getInt("vrsta_transakcije_id")))
                 val valuta = getData("http://3.72.75.217/mBankingAPI/api/currency/get.php?id=".plus(transakcija.getInt("valuta_id")))
                 // I DONT KNOW WHAT THE FUCK THIS DOES
-                //val sadrzaj = Transaction(vrsta.getJSONObject(0).getString("naziv"), transakcija.getDouble("iznos") , valuta.getJSONObject(0).getString("oznaka"), " ")
-
-                //listaTransakcija.add(transakcija)
+                val sadrzaj = Transaction1(vrsta.getJSONObject(0).getString("naziv"), transakcija.getDouble("iznos") , valuta.getJSONObject(0).getString("oznaka"))
+                listaTransakcija.add(sadrzaj)
             }
         }
 
         transactionAdapter = TransactionAdapter(listaTransakcija)
         binding.transactionsView.adapter = transactionAdapter
-        binding.transactionsView.layoutManager = LinearLayoutManager(this)
+        binding.transactionsView.layoutManager = LinearLayoutManager(this)*/
 
     }
 

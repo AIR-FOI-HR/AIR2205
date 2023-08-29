@@ -20,7 +20,7 @@ class BankOrderViewHolder (itemView : View, listener: BankOrderAdapter.onItemCli
     fun bindDataToView(transaction: Transaction){
         dateTime?.text = transaction.datum_izvrsenja.subSequence(5, transaction.datum_izvrsenja.length)
         nameAndSurname?.text = currentUser!!.ime.plus(" ").plus(currentUser!!.prezime)
-        racunIban?.text = transaction.iban
+        racunIban?.text = transaction.platitelj_iban
         description?.text = transaction.opis_placanja
         amount?.text = transaction.iznos.toString()
     }

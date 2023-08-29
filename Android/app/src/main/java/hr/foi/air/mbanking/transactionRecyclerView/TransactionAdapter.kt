@@ -7,7 +7,7 @@ import hr.foi.air.mbanking.R
 import hr.foi.air.mbanking.entities.Transaction
 import hr.foi.air.mbanking.entities.Transaction1
 
-class TransactionAdapter (private val transtactions: List<Transaction1>) : RecyclerView.Adapter<TransactionViewHolder>() {
+class TransactionAdapter (private val transtactions: List<Transaction>) : RecyclerView.Adapter<TransactionViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         return TransactionViewHolder(

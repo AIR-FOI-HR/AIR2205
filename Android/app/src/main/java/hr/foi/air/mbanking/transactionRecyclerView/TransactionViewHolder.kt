@@ -10,7 +10,7 @@ import hr.foi.air.mbanking.entities.Transaction1
 class TransactionViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     var transactionName = itemView.findViewById<TextView>(R.id.transaction)
 
-    fun bindDataToView(transaction: Transaction1){
-        transactionName?.text = transaction.opis.plus("    ").plus(transaction.iznos.toString()).plus(" ").plus(transaction.valuta)
+    fun bindDataToView(transaction: Transaction){
+        transactionName?.text = transaction.opis_placanja.plus("    ").plus(transaction.iznos.toString()).plus(" EUR")
     }
 }

@@ -44,7 +44,7 @@ class BankOrderListActivity : AppCompatActivity() {
             val allBankOrderList = transactionRequest.getAllTransactions()
             for(transaction in allBankOrderList){
 
-                if(transaction.iban == currentUserAccount.iban){
+                if(transaction.platitelj_iban == currentUserAccount.iban){
                     currentUserTransactionList.add(transaction)
                 }
             }
@@ -68,8 +68,8 @@ class BankOrderListActivity : AppCompatActivity() {
                         intent.putExtra("model", currentUserTransactionList[position].model)
                         intent.putExtra("pozivNaBroj", currentUserTransactionList[position].poziv_na_broj)
                         intent.putExtra("datumIzvrsenja", currentUserTransactionList[position].datum_izvrsenja)
-                        intent.putExtra("vrstaTransakcije", currentUserTransactionList[position].vrsta_transakcije_id)
-                        intent.putExtra("racunIban", currentUserTransactionList[position].iban)
+                        intent.putExtra("vrstaTransakcije", currentUserTransactionList[position].transakcija_id)
+                        intent.putExtra("racunIban", currentUserTransactionList[position].platitelj_iban)
                         intent.putExtra("valuta", currentUserTransactionList[position].valuta_id)
                         startActivity(intent)
                     }

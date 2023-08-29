@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">mBanking</string>
+    <string name="iban">IBAN: %1$s </string>
+    <string name="vrsta_ra_una_1_s">Vrsta računa: %1$s</string>
+    <string name="aktivnost_1_s">Aktivnost: %1$s</string>
+    <string name="stanje_1_f">Stanje: %.2f</string>
+    <string name="uplate_i_isplate">Uplate i isplate</string>
+    <string name="transakcije">TRANSAKCIJE</string>
+    <string name="transakcija_1_d">Transakcija %1$d </string>
+    <string name="notifikacija_1_d">Notifikacija %1$d: %2$s</string>
 </resources>

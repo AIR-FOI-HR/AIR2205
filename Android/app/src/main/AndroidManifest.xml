@@ -68,6 +68,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".features.ui.notification.NotificationActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".LogInActivity"
             android:exported="true">
             <intent-filter>

@@ -4,7 +4,6 @@ package hr.foi.air.mbanking
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import foi.projekt.skeniraj_i_plati.QRScanActivity
 import hr.foi.air.mbanking.databinding.LayoutMenuBinding
 
@@ -39,7 +38,7 @@ class MenuActivity : AppCompatActivity() {
     fun onGeneriranjeQrKodaPressed(){
         binding.buttonGenerirajQrKod.setOnClickListener{
             val intent1 = Intent(this, GenerateCodeActivity::class.java)
-            //intent1.putExtra("GlavniRacun", glavniRacun)
+            intent1.putExtra("GlavniRacun", glavniRacun)
             startActivity(intent1)
         }
     }

@@ -46,7 +46,7 @@ class UserRequest {
             .addPathSegment("mBankingAPI")
             .addPathSegment("api")
             .addPathSegment("user")
-            .addPathSegment("get_all.php")
+            .addPathSegment("get.php")
             .addQueryParameter("id", id.toString())
             .build()
 
@@ -120,9 +120,9 @@ class UserRequest {
             throw HttpRequestFailureException("Pogreška kod slanja podataka")
 
         return response.code
-     }
-     
-     fun createUser(
+    }
+
+    fun createUser(
         ime: String,
         prezime: String,
         email: String,
@@ -154,5 +154,5 @@ class UserRequest {
 
         return recoveryCode
     }
-     
+
 }

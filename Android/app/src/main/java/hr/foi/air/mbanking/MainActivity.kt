@@ -7,16 +7,17 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import hr.foi.air.mbanking.api.AccountRequest
 import hr.foi.air.mbanking.api.TransactionRequest
 import hr.foi.air.mbanking.api.UserRequest
 import hr.foi.air.mbanking.databinding.LayoutUserAccountBinding
+import hr.foi.air.mbanking.entities.Account
 import hr.foi.air.mbanking.entities.Transaction
 import hr.foi.air.mbanking.transactionRecyclerView.TransactionAdapter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
-import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.IOException
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: LayoutUserAccountBinding
     private lateinit var transactionAdapter: TransactionAdapter
     private val client = OkHttpClient()
-    private lateinit var glavniRacun: JSONObject
+    private lateinit var glavniRacun: String
     private val userRequest = UserRequest()
     private val accountRequest = AccountRequest()
     private val transactionRequest = TransactionRequest()
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.username.text = "Dobrodošli ".plus(trenutniKorisnik?.ime)
 
         var racunIBAN = id?.let { getMainUserAccount(it) }
-        //glavniRacun = racun
+
 
         if(binding.accountDetails.text == ""){
             binding.accountDetails.text = "Nema aktivnog računa"
@@ -91,7 +92,8 @@ class MainActivity : AppCompatActivity() {
                     .plus("Raspoloživo: ")
                     .plus(racun.stanje)
 
-
+                val gson = Gson()
+                glavniRacun = gson.toJson(racun)
                 return racun.iban
             }
         }
@@ -115,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     fun onMenuPressed(){
         binding.menuButton.setOnClickListener{
             val intent1 = Intent(this, MenuActivity::class.java)
-            //intent1.putExtra("GlavniRacun", glavniRacun.toString())
+            intent1.putExtra("GlavniRacun", glavniRacun)
             startActivity(intent1)
         }
     }

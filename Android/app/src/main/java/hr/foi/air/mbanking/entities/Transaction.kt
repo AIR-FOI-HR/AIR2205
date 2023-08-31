@@ -9,5 +9,5 @@ data class Transaction(
     var model: String = "",
     var poziv_na_broj: String = "",
     var datum_izvrsenja: String = "",
-    var valuta_id: Int = 0
+    var valuta_id: Int = 1
 )

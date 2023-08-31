@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: LayoutUserAccountBinding
     private lateinit var transactionAdapter: TransactionAdapter
     private val client = OkHttpClient()
-    private var glavniRacun: JSONObject? = null
+    private var glavniRacun: String? = null
     private var iban = "HR2121"
     private val userRequest = UserRequest()
     private val accountRequest = AccountRequest()
@@ -68,19 +68,13 @@ class MainActivity : AppCompatActivity() {
         binding.username.text = "Dobrodošli ".plus(trenutniKorisnik?.ime)
 
         var racunIBAN = id?.let { getMainUserAccount(it) }
-        //glavniRacun = racun
-
+        glavniRacun = id.toString()
         if (binding.accountDetails.text == "") {
             binding.accountDetails.text = "Nema aktivnog računa"
         }
-
-
-        if (racunIBAN != null) {
-            getUserTransactions(racunIBAN)
-        }
     }
 
-    fun getMainUserAccount(id: Int): String? {
+    fun getMainUserAccount(id: Int): String {
         val racuni = accountRequest.getAllAccounts()
         var isAccount = false
         for (racun in racuni) {
@@ -99,20 +93,23 @@ class MainActivity : AppCompatActivity() {
                     .plus(racun.stanje)
 
                 iban = racun.iban
+                getUserTransactions(iban)
             }
         }
         if (!isAccount){
-            val userIban = accountRequest.createAccounts(id)
+            val user = accountRequest.createAccounts(id)
             val vrsteRacuna = "Tekuci"
 
             binding.accountDetails.text = vrsteRacuna
                 .plus("\n")
-                .plus(userIban)
+                .plus(user.iban)
                 .plus("\n")
                 .plus("Raspoloživo: ")
                 .plus(100)
-            iban = userIban
-            return userIban
+            iban = user.iban
+            getUserTransactions(iban)
+            glavniRacun = user.korisnik_id.toString()
+            return user.iban
         }
         return ""
     }
@@ -132,7 +129,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onMenuPressed() {
-        Log.d("LOLOLOLO", iban)
         binding.menuButton.setOnClickListener {
             val intent1 = Intent(this, MenuActivity::class.java)
             intent1.putExtra("GlavniRacun", glavniRacun.toString())

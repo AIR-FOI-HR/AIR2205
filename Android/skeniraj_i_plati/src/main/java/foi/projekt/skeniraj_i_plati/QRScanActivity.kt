@@ -16,6 +16,7 @@ class QRScanActivity: AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     private lateinit var binding: LayoutQrscanBinding
     private lateinit var glavniRacun: String
+    private var iban = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ class QRScanActivity: AppCompatActivity() {
         setContentView(view)
 
         glavniRacun = intent.getStringExtra("GlavniRacun").toString()
+        iban = intent.getStringExtra("IBAN").toString()
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 123)
@@ -48,6 +50,7 @@ class QRScanActivity: AppCompatActivity() {
             val intent1 = Intent(this, QRCodeActivity::class.java)
             intent1.putExtra("QRCodeData", it.text)
             intent1.putExtra("GlavniRacun", glavniRacun)
+            intent1.putExtra("IBAN", iban)
             startActivity(intent1)
 
             finish()

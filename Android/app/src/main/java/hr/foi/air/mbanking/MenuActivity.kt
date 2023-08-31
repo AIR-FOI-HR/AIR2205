@@ -3,16 +3,17 @@ package hr.foi.air.mbanking
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import foi.projekt.skeniraj_i_plati.QRScanActivity
 import hr.foi.air.mbanking.databinding.LayoutMenuBinding
+import hr.foi.air.mbanking.features.ui.fundstransaction.FundsTransactionActivity
 import hr.foi.air.mbanking.features.ui.notification.NotificationActivity
 import hr.foi.air.mbanking.features.ui.useraccounts.UserAccountsActivity
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var binding: LayoutMenuBinding
-    private lateinit var glavniRacun: String
+    private lateinit var korisnikID: String
     private lateinit var iban: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +23,7 @@ class MenuActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        glavniRacun = intent.getStringExtra("GlavniRacun").toString()
+        korisnikID = intent.getStringExtra("GlavniRacun").toString()
         iban = intent.getStringExtra("IBAN").toString()
 
         binding.buttonPrikazRacuna.setOnClickListener {
@@ -35,6 +36,12 @@ class MenuActivity : AppCompatActivity() {
             startActivity(NotificationActivity.createIntent(this))
         }
 
+        binding.buttonKorisnikoviPrijenosi.setOnClickListener {
+            val intent = FundsTransactionActivity.createIntent(this)
+            intent.putExtra(FundsTransactionActivity.USER_IBAN_FUNDS, iban)
+            startActivity(intent)
+        }
+
         onBackArrowPressed()
         onLogout()
         onSkenirajIPlatiPressed()
@@ -45,7 +52,8 @@ class MenuActivity : AppCompatActivity() {
     fun onSkenirajIPlatiPressed() {
         binding.buttonSkenirajIPlati.setOnClickListener {
             val intent1 = Intent(this, QRScanActivity::class.java)
-            intent1.putExtra("GlavniRacun", glavniRacun)
+            intent1.putExtra("GlavniRacun", korisnikID)
+            intent1.putExtra("IBAN", iban)
             startActivity(intent1)
         }
     }
@@ -53,7 +61,8 @@ class MenuActivity : AppCompatActivity() {
     fun onGeneriranjeQrKodaPressed() {
         binding.buttonGenerirajQrKod.setOnClickListener {
             val intent1 = Intent(this, GenerateCodeActivity::class.java)
-            intent1.putExtra("GlavniRacun", glavniRacun)
+            intent1.putExtra("GlavniRacun", korisnikID)
+            intent1.putExtra("IBAN", iban)
             startActivity(intent1)
         }
     }

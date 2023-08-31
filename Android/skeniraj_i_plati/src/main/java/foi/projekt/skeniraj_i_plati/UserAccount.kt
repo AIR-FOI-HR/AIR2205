@@ -1,9 +1,9 @@
-package hr.foi.air.mbanking.features.domain.models
+package foi.projekt.skeniraj_i_plati
 
 
 data class UserAccount(
     val iban: String,
-    val stanje: Double,
+    var stanje: Double,
     val aktivnost: String,
     val korisnik_id: Int,
     var vrsta_racuna_id: Int,

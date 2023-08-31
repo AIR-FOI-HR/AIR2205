@@ -1,6 +1,5 @@
 package foi.projekt.skeniraj_i_plati
 
-import android.content.res.TypedArray
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -8,36 +7,35 @@ import com.google.gson.Gson
 import entities.Account
 import entities.Transaction
 import foi.projekt.skeniraj_i_plati.databinding.LayoutQrcodeBinding
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
-import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
+import java.util.Date
 
 
-class QRCodeActivity: AppCompatActivity() {
+class QRCodeActivity : AppCompatActivity() {
     private lateinit var binding: LayoutQrcodeBinding
-    private lateinit var glavniRacun: JSONObject
+    private lateinit var userId: String
+    private lateinit var userIban: String
     private val client = OkHttpClient()
     private val JSON = "application/json; charset=utf-8".toMediaType()
     private lateinit var ibanQRkoda: String
     private lateinit var dataFromQRCode: Array<String>
     private lateinit var transaction1: Transaction
     private lateinit var transaction2: Transaction
+    private val userRequest = UserRequest()
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val codeData = intent.getStringExtra("QRCodeData").toString()
-        glavniRacun = JSONObject(intent.getStringExtra("GlavniRacun").toString())
-
+        userId = intent.getStringExtra("GlavniRacun").toString()
+        userIban = intent.getStringExtra("IBAN").toString()
         dataFromQRCode = codeData.split("\\R".toRegex()).toTypedArray()
         ibanQRkoda = dataFromQRCode[6]
 
@@ -66,13 +64,13 @@ class QRCodeActivity: AppCompatActivity() {
         }
     }
 
-    private fun postData(url: String, jsonData: String): Boolean{
+    private fun postData(url: String, jsonData: String): Boolean {
         val request = Request.Builder()
             .url(url)
             .post(jsonData.toRequestBody(JSON))
             .build()
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful){
+            if (!response.isSuccessful) {
                 throw IOException("Unexpected code $response")
                 return false
             }
@@ -80,51 +78,64 @@ class QRCodeActivity: AppCompatActivity() {
         }
     }
 
-    private fun onBackArrowPressed(){
-        binding.buttonBack.setOnClickListener(){
+    private fun onBackArrowPressed() {
+        binding.buttonBack.setOnClickListener() {
             finish()
         }
     }
 
-    private fun onOdustaniPressed(){
-        binding.buttonOdustani.setOnClickListener(){
+    private fun onOdustaniPressed() {
+        binding.buttonOdustani.setOnClickListener() {
             finish()
         }
     }
 
-    private fun onPlatiPressed(){
-        binding.buttonPlati.setOnClickListener(){
-            val dohvacenRacun = getData("http://20.67.25.104/mBankingAPI/api/account/get.php?iban=".plus(ibanQRkoda))
+    private fun onPlatiPressed() {
+        binding.buttonPlati.setOnClickListener {
+            val dohvacenRacun =
+                getData("http://3.72.75.217/mBankingAPI/api/account/get.php?iban=".plus(ibanQRkoda))
 
             val gson = Gson()
-            var racunPrimatelja = gson.fromJson(dohvacenRacun.getJSONObject(0).toString(), Account::class.java)
-            var racunPlatitelja = gson.fromJson(glavniRacun.toString(), Account::class.java)
+            val racunPrimatelja =
+                gson.fromJson(dohvacenRacun.getJSONObject(0).toString(), Account::class.java)
+            val racunPlatitelja = userRequest.getUserByIban(userIban)
             val regex = """(\d+)""".toRegex()
             val amount = regex.find(dataFromQRCode[7])
-            racunPrimatelja.stanje = dohvacenRacun.getJSONObject(0).getDouble("stanje") + amount!!.value.toDouble()
-            racunPlatitelja.stanje = glavniRacun.getDouble("stanje") - amount!!.value.toDouble()
+            racunPrimatelja.stanje =
+                dohvacenRacun.getJSONObject(0).getDouble("stanje") + amount!!.value.toDouble()
+            racunPlatitelja?.stanje =
+                racunPlatitelja?.stanje?.minus(amount.value.toDouble()) ?: 100.0
 
-            if(racunPlatitelja.stanje > 0){
-                var url = "http://20.67.25.104/mBankingAPI/api/account/update.php"
-                if( postData(url, gson.toJson(racunPrimatelja)) && postData(url, gson.toJson(racunPlatitelja))){
+            if (racunPlatitelja?.stanje!! > 0) {
+                var url = "http://3.72.75.217/mBankingAPI/api/account/update.php"
+                if (postData(url, gson.toJson(racunPrimatelja)) && postData(
+                        url,
+                        gson.toJson(racunPlatitelja)
+                    )
+                ) {
                     val toast = Toast.makeText(this, "Uspješna transakcija", Toast.LENGTH_SHORT)
                     toast.show()
-                }
-                else{
+                } else {
                     val toast = Toast.makeText(this, "Transackija nije uspjela", Toast.LENGTH_SHORT)
                     toast.show()
                 }
 
-                val formatter = SimpleDateFormat("yyyy-MM-dd")
-                val date = Date()
-                url = "http://20.67.25.104/mBankingAPI/api/transaction/create.php"
-                transaction1 = Transaction(amount!!.value.toDouble(), "Uplata", "HR00", "abc123", formatter.format(date), 3, racunPrimatelja.iban, 1)
-                transaction2 = Transaction(amount!!.value.toDouble(), "Isplata", "HR00", "def456", formatter.format(date), 3, racunPlatitelja.iban, 1)
-                if(postData(url, gson.toJson(transaction1)) && postData(url, gson.toJson(transaction2))){
-                }
-                else{
-                    val toast = Toast.makeText(this, "Greška pri upisu transakcije u bazu podataka!", Toast.LENGTH_SHORT)
-                    toast.show()
+                url = "http://3.72.75.217/mBankingAPI/api/transaction/create.php"
+                transaction1 = Transaction(
+                    platitelj_iban = racunPlatitelja.iban,
+                    primatelj_iban = racunPrimatelja.iban,
+                    iznos = amount.value.toDouble(),
+                    opis_placanja = "placanje skeniraj i plati",
+                    model = "HR00",
+                    poziv_na_broj = "Neki poziv na broj",
+                    datum_izvrsenja = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                )
+
+                if (postData(url, gson.toJson(transaction1))
+                ) {
+                    Toast.makeText(this, "Uspjesno placeno", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Greška pri upisu transakcije", Toast.LENGTH_SHORT).show()
                 }
             }
         }

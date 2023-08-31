@@ -10,6 +10,8 @@ import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import hr.foi.air.mbanking.api.UserRequest
 import hr.foi.air.mbanking.databinding.LayoutGenerateCodeBinding
+import hr.foi.air.mbanking.entities.User
+import hr.foi.air.mbanking.features.domain.models.UserAccount
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,7 +26,10 @@ class GenerateCodeActivity: AppCompatActivity() {
 
     private lateinit var binding: LayoutGenerateCodeBinding
     private val client = OkHttpClient()
-    private lateinit var glavniRacun: JSONObject
+    private lateinit var korisnikId: String
+    private lateinit var korisnikIban: String
+    private var user: User? = null
+    private var userAccount: UserAccount? = null
     private val JSON = "application/json; charset=utf-8".toMediaType()
     private val userRequest = UserRequest()
 
@@ -35,23 +40,13 @@ class GenerateCodeActivity: AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        glavniRacun = JSONObject(intent.getStringExtra("GlavniRacun").toString())
+        korisnikId = intent.getStringExtra("GlavniRacun").toString()
+        korisnikIban = intent.getStringExtra("IBAN").toString()
+        user = userRequest.getUser(korisnikId.toInt())
+        userAccount = userRequest.getUserByIban(korisnikIban)
 
         generateQrCode()
         onBackArrowPressed()
-    }
-
-    private fun getData(url: String): JSONArray {
-        val request = Request.Builder()
-            .url(url)
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-            val podaci = JSONTokener(response.body!!.string()).nextValue() as JSONArray
-            return podaci
-        }
     }
 
     private fun postData(url: String, jsonData: String): Boolean{
@@ -77,13 +72,11 @@ class GenerateCodeActivity: AppCompatActivity() {
     private fun generateQrCode(){
         binding.buttonGenerateQrCode.setOnClickListener{
             var gson = Gson()
-            var racunKorisnika = gson.fromJson(glavniRacun.toString(), hr.foi.air.mbanking.entities.Account::class.java)
 
-            var korisnik = userRequest.getUser(racunKorisnika.korisnik_id)
             var sadrzaj = "BCD\n001\n1\nSCT\nBSFTWB\n"
-                .plus(korisnik?.ime)
+                .plus(user?.ime)
                 .plus("\n")
-                .plus(racunKorisnika.iban)
+                .plus(userAccount?.iban)
                 .plus("\nEUR")
                 .plus(binding.textAmount.text)
                 .plus("\nCHAR\n")
@@ -96,8 +89,8 @@ class GenerateCodeActivity: AppCompatActivity() {
             binding.imageQrCode.setImageBitmap(bitmap)
 
             val qrCodeString = bitmapToString(bitmap)
-            racunKorisnika.qr_kod = qrCodeString
-            if(postData("http://3.72.75.217/mBankingAPI/api/account/update.php", gson.toJson(racunKorisnika))){
+            userAccount?.qr_kod  = qrCodeString
+            if(postData("http://3.72.75.217/mBankingAPI/api/account/update.php", gson.toJson(userAccount))){
                 val toast = Toast.makeText(this, "Spremljeno", Toast.LENGTH_SHORT)
                 toast.show()
             }

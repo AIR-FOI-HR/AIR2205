@@ -1,11 +1,16 @@
 package hr.foi.air.mbanking.api
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import hr.foi.air.mbanking.entities.User
 import hr.foi.air.mbanking.exceptions.HttpRequestFailureException
 
 import hr.foi.air.mbanking.exceptions.LoginFailureException
+import hr.foi.air.mbanking.features.ApiManager
+import hr.foi.air.mbanking.features.domain.models.UserAccount
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -153,6 +158,22 @@ class UserRequest {
         if (!response.isSuccessful) throw HttpRequestFailureException("Pogreška kod slanja podataka")
 
         return recoveryCode
+    }
+
+    fun getUserByIban(userIban: String): UserAccount? {
+        val queryParams = mapOf("iban" to userIban)
+        val userAccountsType = object : TypeToken<List<UserAccount>>() {}
+        val result = ApiManager.makeApiCall(
+            pathSegments = arrayOf("account", "get.php"),
+            queryParams = queryParams,
+            returnType = userAccountsType
+        )
+        return if (result.isSuccess) {
+            Log.d("LOLOLO", result.toString())
+            result.getOrNull()?.get(0)
+        } else {
+            null
+        }
     }
 
 }

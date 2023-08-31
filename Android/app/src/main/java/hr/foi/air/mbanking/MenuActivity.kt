@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import foi.projekt.skeniraj_i_plati.QRScanActivity
 import hr.foi.air.mbanking.databinding.LayoutMenuBinding
+import hr.foi.air.mbanking.features.ui.fundstransaction.FundsTransactionActivity
 import hr.foi.air.mbanking.features.ui.notification.NotificationActivity
 import hr.foi.air.mbanking.features.ui.useraccounts.UserAccountsActivity
 
@@ -33,6 +34,12 @@ class MenuActivity : AppCompatActivity() {
 
         binding.buttonObavijesti.setOnClickListener {
             startActivity(NotificationActivity.createIntent(this))
+        }
+
+        binding.buttonKorisnikoviPrijenosi.setOnClickListener {
+            val intent = FundsTransactionActivity.createIntent(this)
+            intent.putExtra(FundsTransactionActivity.USER_IBAN_FUNDS, iban)
+            startActivity(intent)
         }
 
         onBackArrowPressed()

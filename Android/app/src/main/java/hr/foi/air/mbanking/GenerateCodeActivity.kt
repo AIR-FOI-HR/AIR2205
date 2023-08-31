@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import hr.foi.air.mbanking.api.UserRequest
 import hr.foi.air.mbanking.databinding.LayoutGenerateCodeBinding
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -25,6 +26,7 @@ class GenerateCodeActivity: AppCompatActivity() {
     private val client = OkHttpClient()
     private lateinit var glavniRacun: JSONObject
     private val JSON = "application/json; charset=utf-8".toMediaType()
+    private val userRequest = UserRequest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,9 +79,9 @@ class GenerateCodeActivity: AppCompatActivity() {
             var gson = Gson()
             var racunKorisnika = gson.fromJson(glavniRacun.toString(), hr.foi.air.mbanking.entities.Account::class.java)
 
-            var korisnik = getData("http://20.67.25.104/mBankingAPI/api/user/get.php?id=".plus(racunKorisnika.korisnik_id))
+            var korisnik = userRequest.getUser(racunKorisnika.korisnik_id)
             var sadrzaj = "BCD\n001\n1\nSCT\nBSFTWB\n"
-                .plus(korisnik.getJSONObject(0).getString("ime"))
+                .plus(korisnik?.ime)
                 .plus("\n")
                 .plus(racunKorisnika.iban)
                 .plus("\nEUR")
@@ -95,7 +97,7 @@ class GenerateCodeActivity: AppCompatActivity() {
 
             val qrCodeString = bitmapToString(bitmap)
             racunKorisnika.qr_kod = qrCodeString
-            if(postData("http://20.67.25.104/mBankingAPI/api/account/update.php", gson.toJson(racunKorisnika))){
+            if(postData("http://3.72.75.217/mBankingAPI/api/account/update.php", gson.toJson(racunKorisnika))){
                 val toast = Toast.makeText(this, "Spremljeno", Toast.LENGTH_SHORT)
                 toast.show()
             }

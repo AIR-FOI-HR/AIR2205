@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "hr.foi.air.mbankingapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "hr.foi.air.mbankingapp"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

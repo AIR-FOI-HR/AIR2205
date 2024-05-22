@@ -31,7 +31,7 @@ $error_handler->forceContentType('application/json');
 $app->group('/api/users', function (RouteCollectorProxy $group) {
     $group->get('', App\Controllers\KorisnikController::class . ':get_users');
     $group->get('/{id}', App\Controllers\KorisnikController::class . ':get_user');
-    $group->post('/', App\Controllers\KorisnikController::class . ':create_user');
+    $group->post('', App\Controllers\KorisnikController::class . ':create_user');
     $group->patch('/{id}', App\Controllers\KorisnikController::class . ':update_user');
     $group->delete('/{id}', App\Controllers\KorisnikController::class . ':delete_user');
     $group->post('/auth', App\Controllers\KorisnikController::class . ':login_user');

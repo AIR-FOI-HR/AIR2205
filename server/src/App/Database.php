@@ -9,8 +9,8 @@
         public function __constructor() {}
 
         public function connect() {
-            $env = parse_ini_file("dbconfig.ini");
-            $this->db = new mysqli($env["hostname"], $env["username"], $env["password"], $env["database"]);
+            $env = parse_ini_file("config.ini", true);
+            $this->db = new mysqli($env["database"]["hostname"], $env["database"]["username"], $env["database"]["password"], $env["database"]["database"]);
 
             if ($this->db->connect_errno) {
                 die("Connection to DB failed: " . $this->db->connect_errno);

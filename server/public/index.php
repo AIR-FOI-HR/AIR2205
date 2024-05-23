@@ -5,6 +5,8 @@ use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use DI\Container;
 use App\Middleware\AddJsonResponseHeader;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -35,6 +37,7 @@ $app->group('/api/users', function (RouteCollectorProxy $group) {
     $group->patch('/{id}', App\Controllers\KorisnikController::class . ':update_user');
     $group->delete('/{id}', App\Controllers\KorisnikController::class . ':delete_user');
     $group->post('/auth', App\Controllers\KorisnikController::class . ':login_user');
+    $group->post('/restore', App\Controllers\KorisnikController::class . ':restore_user');
 });
 
 $app->run();

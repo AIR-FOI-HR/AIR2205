@@ -41,7 +41,23 @@
             ];
         }
 
+        public function get_id() : int {
+            return $this->id;
+        }
+
+        public function get_ime() : string {
+            return $this->ime;
+        }
+
+        public function get_email() : string {
+            return $this->email;
+        }
+
         public function get_pin() : string {
+            return $this->pin;
+        }
+
+        public function get_kod() : string {
             return $this->pin;
         }
     }

@@ -40,6 +40,7 @@ class KorisnikController {
 
     public function create_user(Request $request, Response $response) : Response { 
         $body = $request->getParsedBody();
+        
         try {
             $data = $this->repository->create($body);
         } catch (ErrorException $ex) {
@@ -97,6 +98,25 @@ class KorisnikController {
 
         if ($data == null) {
             throw new \Slim\Exception\HttpBadRequestException($request, message: "Korisnik nije pronađen.");
+        }
+
+        $body = json_encode($data);
+        $response->getBody()->write($body);
+        return $response->withStatus(200);
+    }
+
+    public function restore_user(Request $request, Response $response) : Response { 
+        $body = $request->getParsedBody();
+        try {
+            $data = $this->repository->restore($body);
+        } catch (ErrorException $ex) {
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, message: $ex->getMessage());
+        } catch (InvalidUserException $ex) {
+            throw new \Slim\Exception\HttpForbiddenException($request, message: $ex->getMessage());
+        }
+
+        if ($data == null) {
+            throw new \Slim\Exception\HttpBadRequestException($request, message: "Neuspješno generiranje koda.");
         }
 
         $body = json_encode($data);

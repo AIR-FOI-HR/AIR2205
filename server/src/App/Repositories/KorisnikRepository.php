@@ -6,6 +6,8 @@ use App\Database;
 use App\Exceptions\InvalidUserException;
 use App\Models\Korisnik;
 use ErrorException;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class KorisnikRepository {
     public function __construct(private Database $database) {}
@@ -175,5 +177,90 @@ class KorisnikRepository {
         }
 
         return $korisnik;
+    }
+
+    public function restore(array $data) : ?Korisnik {
+        $sql = "SELECT * FROM korisnik WHERE email = ?;";
+
+        $this->database->connect();
+        $stmt = $this->database->get_connection()->prepare($sql);
+        $stmt->bind_param("s", $data["email"]);
+
+        if (!$stmt->execute()) {
+            trigger_error("Error executing query: " . $stmt->error);
+            $this->database->disconnect();
+            throw new ErrorException("Database error occured!");
+        }
+
+        $result = $stmt->get_result();
+        $this->database->disconnect();
+
+        while ($row = $result->fetch_object()) {
+            if ($row) {
+                $korisnik = new Korisnik(
+                    intval($row->kor_id), 
+                    $row->ime, 
+                    $row->prezime, 
+                    $row->email, 
+                    $row->oib,
+                    $row->pin,
+                    $row->kod,
+                    $row->tel_broj,
+                );
+            }
+        }
+
+        if (!isset($korisnik)) {
+            throw new InvalidUserException("Korisnik ne postoji.");
+        }
+
+        $length = 12;
+        $kod = substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1,$length);
+
+        $sql = "UPDATE korisnik SET kod = ? WHERE kor_id = ?;";
+
+        $this->database->connect();
+        $stmt = $this->database->get_connection()->prepare($sql);
+        $stmt->bind_param("si", $kod, $korisnik->get_id());
+
+        if (!$stmt->execute()) {
+            trigger_error("Error executing query: " . $stmt->error);
+            $this->database->disconnect();
+            throw new ErrorException("Database error occured!");
+        }
+
+        if ($stmt->affected_rows == 0) {
+            $this->database->disconnect();
+            throw new ErrorException("Greška kod postavljanja koda za oporavak! Pokušajte ponovno.");
+        }
+        $this->database->disconnect();
+        $ini = file_get_contents(__DIR__ . "/../config.ini");
+        $env = parse_ini_string($ini, true);
+        
+        $mail = new PHPMailer(true);
+        $mail->IsSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPDebug = 2;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+        $mail->Username = $env["mail"]["mail_addr"];
+        $mail->Password = $env["mail"]["password"];
+
+        $mail->setFrom($env["mail"]["mail_addr"], "mBankingDev");
+        $mail->addAddress($korisnik->get_email(), $korisnik->get_ime());
+        $mail->isHTML(false);
+        $mail->Subject = "mBanking - Kod za oporavak";
+        $mail->Body = "mBanking vam šalje kod za oporavak PIN-a: $kod";
+
+        try {
+            if (!$mail->send()) {
+                throw new ErrorException("Neuspješno slanje e-maila.");
+            }
+        } catch (Exception $ex) {
+            throw new ErrorException("Neuspješno slanje e-maila.");
+        }
+
+        return $this->get($korisnik->get_id());
     }
 }

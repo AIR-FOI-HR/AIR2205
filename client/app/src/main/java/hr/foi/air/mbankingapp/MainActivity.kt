@@ -12,13 +12,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import hr.foi.air.mbankingapp.ui.theme.MBankingAppTheme
+import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
-import hr.foi.air.mbankingapp.ui.views.Register.RegisterKodView
+import hr.foi.air.mbankingapp.ui.views.Login.LoginRestoreFinalView
+import hr.foi.air.mbankingapp.ui.views.Login.LoginRestoreView
+import hr.foi.air.mbankingapp.ui.views.Login.LoginView
 import hr.foi.air.mbankingapp.ui.views.Register.RegisterPinView
 import hr.foi.air.mbankingapp.ui.views.Register.RegisterView
 
 class MainActivity : ComponentActivity() {
     private val registerViewModel: RegisterViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -30,15 +34,21 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController();
 
-                    NavHost(navController = navController, startDestination = "register" ) {
+                    NavHost(navController = navController, startDestination = "login" ) {
+                        composable("login") {
+                            LoginView(viewModel = loginViewModel, navController = navController)
+                        }
+                        composable("login/restore") {
+                            LoginRestoreView(viewModel = loginViewModel, navController = navController)
+                        }
+                        composable("login/restore/pin") {
+                            LoginRestoreFinalView(viewModel = loginViewModel, navController = navController)
+                        }
                         composable("register") {
                             RegisterView(viewModel = registerViewModel, navController = navController)
                         }
                         composable("register/pin") {
                             RegisterPinView(viewModel = registerViewModel, navController = navController)
-                        }
-                        composable("register/pin/kod") {
-                            RegisterKodView(viewModel = registerViewModel, navController = navController)
                         }
                     }
                 }

@@ -59,7 +59,7 @@ class RegisterViewModel : ViewModel() {
         return true;
     }
 
-    fun register(context: Context, navController: NavController) {
+    fun register(context: Context, onNavigationToLogin: () -> Unit) {
         viewModelScope.launch {
             try {
                 val korisnik = repository.createUser(
@@ -73,11 +73,7 @@ class RegisterViewModel : ViewModel() {
                 )
 
                 Toast.makeText(context, "Registracija uspješna!", Toast.LENGTH_LONG).show();
-                navController.navigate("login") {
-                    popUpTo("register") {
-                        inclusive = true
-                    }
-                }
+                onNavigationToLogin();
             } catch (ex: HttpException) {
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))

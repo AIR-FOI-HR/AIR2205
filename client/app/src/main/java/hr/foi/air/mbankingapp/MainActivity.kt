@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +28,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MBankingAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -36,19 +36,54 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "login" ) {
                         composable("login") {
-                            LoginView(viewModel = loginViewModel, navController = navController)
+                            LoginView(
+                                viewModel = loginViewModel,
+                                onNavigateToRegister = {
+                                    navController.navigate("register") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
+                                onNavigateToRestore = { navController.navigate("login/restore"); }
+                            )
                         }
                         composable("login/restore") {
-                            LoginRestoreView(viewModel = loginViewModel, navController = navController)
+                            LoginRestoreView(
+                                viewModel = loginViewModel,
+                                onNavigateToLogin = { navController.popBackStack() },
+                                onNavigateToNext = { navController.navigate("login/restore/pin") }
+                            )
                         }
                         composable("login/restore/pin") {
-                            LoginRestoreFinalView(viewModel = loginViewModel, navController = navController)
+                            LoginRestoreFinalView(
+                                viewModel = loginViewModel,
+                                onNavigateToLogin = { navController.popBackStack(route = "login", inclusive = false) }
+                            )
                         }
                         composable("register") {
-                            RegisterView(viewModel = registerViewModel, navController = navController)
+                            RegisterView(
+                                viewModel = registerViewModel,
+                                onNavigationToLogin = {
+                                    navController.navigate("login") {
+                                        popUpTo("register") {
+                                            inclusive = true
+                                        }
+                                    }
+                                },
+                                onNavigationToRegisterPin = { navController.navigate("register/pin") }
+                            )
                         }
                         composable("register/pin") {
-                            RegisterPinView(viewModel = registerViewModel, navController = navController)
+                            RegisterPinView(
+                                viewModel = registerViewModel,
+                                onNavigationToLogin = {
+                                    navController.navigate("login") {
+                                        popUpTo("register") {
+                                            inclusive = true
+                                        }
+                                    }
+                                },
+                                onNavigationToBack = { navController.popBackStack(); }
+                            )
                         }
                     }
                 }

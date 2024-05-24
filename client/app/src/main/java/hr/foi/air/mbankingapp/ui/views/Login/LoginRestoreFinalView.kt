@@ -42,7 +42,7 @@ import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 @Composable
 fun LoginRestoreFinalView(
     viewModel: LoginViewModel,
-    navController: NavController
+    onNavigateToLogin: () -> Unit,
 ) {
     var kod by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
@@ -110,27 +110,16 @@ fun LoginRestoreFinalView(
                 .padding(top = 20.dp, bottom = 30.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(
-                    onClick = { navController.popBackStack(route = "login", inclusive = false)  },
+                    onClick = { onNavigateToLogin()  },
                     colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
                     Text(text = "Odustani")
                 }
                 Button(
-                    onClick = {
-                        viewModel.updatePin(context, navController, kod, pin, pinPotvr)
-                    },
+                    onClick = { viewModel.updatePin(context, kod, pin, pinPotvr, onNavigateToLogin) },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                     Text(text = "Potvrdi")
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginRestoreFinalViewPreview() {
-    LoginRestoreFinalView(
-        LoginViewModel(),
-        NavController(LocalContext.current)
-    );
 }

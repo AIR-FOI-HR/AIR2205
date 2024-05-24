@@ -43,7 +43,8 @@ import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 @Composable
 fun LoginView(
     viewModel: LoginViewModel,
-    navController: NavController
+    onNavigateToRegister: () -> Unit,
+    onNavigateToRestore: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
@@ -107,11 +108,7 @@ fun LoginView(
                 Text("Registrirajte se!",
                     fontSize = 12.sp,
                     modifier = Modifier.clickable {
-                        navController.navigate("register") {
-                            popUpTo("login") {
-                                inclusive = true
-                            }
-                        }
+                        onNavigateToRegister()
                     },
                     color = Primary,
                     style = TextStyle(textDecoration = TextDecoration.Underline)
@@ -119,19 +116,10 @@ fun LoginView(
             }
             Text("Oporavak računa",
                 fontSize = 12.sp,
-                modifier = Modifier.clickable { navController.navigate("login/restore") },
+                modifier = Modifier.clickable { onNavigateToRestore() },
                 color = Primary,
                 style = TextStyle(textDecoration = TextDecoration.Underline)
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginViewPreview() {
-    LoginView(
-        LoginViewModel(),
-        NavController(LocalContext.current)
-    )
 }

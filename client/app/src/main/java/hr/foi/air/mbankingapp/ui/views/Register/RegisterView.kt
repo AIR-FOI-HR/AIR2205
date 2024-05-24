@@ -41,7 +41,8 @@ import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 @Composable
 fun RegisterView(
     viewModel: RegisterViewModel,
-    navController: NavController
+    onNavigationToLogin: () -> Unit,
+    onNavigationToRegisterPin: () -> Unit
 ) {
     var ime by viewModel.ime
     var prezime by viewModel.prezime
@@ -108,7 +109,7 @@ fun RegisterView(
                     keyboardType = KeyboardType.Number
                 )
                 Button(
-                    onClick = { if(viewModel.checkUserData(context, ime, prezime, email, oib)) navController.navigate("register/pin") },
+                    onClick = { if(viewModel.checkUserData(context, ime, prezime, email, oib)) onNavigationToRegisterPin() },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                     Text(text = "Registracija")
                 }
@@ -118,13 +119,7 @@ fun RegisterView(
                     Text("Već ste registrirani? ", fontSize = 12.sp)
                     Text("Prijavite se!",
                         fontSize = 12.sp,
-                        modifier = Modifier.clickable {
-                            navController.navigate("login") {
-                                popUpTo("register") {
-                                    inclusive = true
-                                }
-                            }
-                        },
+                        modifier = Modifier.clickable { onNavigationToLogin() },
                         color = Primary,
                         style = TextStyle(textDecoration = TextDecoration.Underline))
                 }

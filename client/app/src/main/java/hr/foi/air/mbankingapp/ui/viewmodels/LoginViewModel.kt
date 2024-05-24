@@ -45,7 +45,7 @@ class LoginViewModel : ViewModel() {
         return success;
     }
 
-    fun restore(context: Context, email: String, navController: NavController) {
+    fun restore(context: Context, email: String, onNavigateToNext: () -> Unit) {
         if (email.isEmpty()) {
             Toast.makeText(context, "E-mail nije upisan!", Toast.LENGTH_SHORT).show();
             return;
@@ -56,7 +56,7 @@ class LoginViewModel : ViewModel() {
                 val korisnik = repository.restoreUser(Korisnik(email = email));
                 restoreKorisnik.value = korisnik;
                 Toast.makeText(context, "Mail je poslan!", Toast.LENGTH_SHORT).show();
-                navController.navigate("login/restore/pin")
+                onNavigateToNext();
             } catch (ex: HttpException) {
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
@@ -68,7 +68,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun updatePin(context: Context, navController: NavController, kod: String, noviPin: String, noviPinPotvr: String) {
+    fun updatePin(context: Context, kod: String, noviPin: String, noviPinPotvr: String, onNavigateToLogin: () -> Unit) {
         if (restoreKorisnik.value.id == null) return;
         if (kod.isEmpty() || noviPin.isEmpty() || noviPinPotvr.isEmpty()) {
             Toast.makeText(context, "Nisu popunjeni svi podaci!", Toast.LENGTH_SHORT).show();
@@ -96,7 +96,7 @@ class LoginViewModel : ViewModel() {
             try {
                 val korisnik = repository.updateUser(restoreKorisnik.value.id!!, restoreKorisnik.value);
                 Toast.makeText(context, "Novi PIN je postavljen!", Toast.LENGTH_SHORT).show();
-                navController.popBackStack(route = "login", inclusive = false)
+                onNavigateToLogin()
             } catch (ex: HttpException) {
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))

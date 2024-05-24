@@ -40,7 +40,8 @@ import hr.foi.air.mbankingapp.ui.theme.Secondary
 @Composable
 fun RegisterPinView(
     viewModel: RegisterViewModel,
-    navController: NavController
+    onNavigationToLogin: () -> Unit,
+    onNavigationToBack: () -> Unit
 ) {
     var pin by remember { mutableStateOf("") }
     var pinPotvrda by remember { mutableStateOf("") }
@@ -98,14 +99,14 @@ fun RegisterPinView(
                 .padding(top = 10.dp, bottom = 30.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(
-                    onClick = { navController.popBackStack() },
+                    onClick = { onNavigationToBack(); },
                     colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
                     Text(text = "Natrag")
                 }
                 Button(
                     onClick = {
                         if(viewModel.checkPin(context, pin, pinPotvrda)) {
-                            viewModel.register(context,navController)
+                            viewModel.register(context, onNavigationToLogin);
                         }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {

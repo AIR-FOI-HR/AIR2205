@@ -39,7 +39,8 @@ import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 @Composable
 fun LoginRestoreView(
     viewModel: LoginViewModel,
-    navController: NavController
+    onNavigateToLogin: () -> Unit,
+    onNavigateToNext: () -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
 
@@ -84,25 +85,16 @@ fun LoginRestoreView(
                 .padding(top = 20.dp, bottom = 30.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(
-                    onClick = { navController.popBackStack()  },
+                    onClick = { onNavigateToLogin()  },
                     colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
                     Text(text = "Odustani")
                 }
                 Button(
-                    onClick = { viewModel.restore(context, email, navController)  },
+                    onClick = { viewModel.restore(context, email, onNavigateToNext)  },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                     Text(text = "Pošalji")
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginRestoreViewPreview() {
-    LoginRestoreView(
-        LoginViewModel(),
-        NavController(LocalContext.current)
-    );
 }

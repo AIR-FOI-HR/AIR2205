@@ -8,9 +8,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import hr.foi.air.mbankingapp.data.models.Korisnik
 import hr.foi.air.mbankingapp.data.repository.KorisnikRepository
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
+import retrofit2.HttpException
 
 
 class RegisterViewModel : ViewModel() {
@@ -21,7 +25,6 @@ class RegisterViewModel : ViewModel() {
     var email = mutableStateOf("");
     var oib = mutableStateOf("");
     var pin = mutableStateOf("");
-    var kod = mutableStateOf("");
 
     fun checkUserData(context: Context, ime: String, prezime: String, email: String, oib: String) : Boolean {
         if (ime.isEmpty() || prezime.isEmpty() || email.isEmpty() || oib.isEmpty()) {
@@ -56,27 +59,7 @@ class RegisterViewModel : ViewModel() {
         return true;
     }
 
-    fun checkKod(context: Context, kod: String, kodPotvrda: String) : Boolean {
-        if (kod.isEmpty() || kodPotvrda.isEmpty()) {
-            Toast.makeText(context, "Nisu popunjeni svi podaci!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        if (kod.length < 5) {
-            Toast.makeText(context, "Dužina koda za oporavak mora biti najmanje 5 znakova.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        if (!kod.equals(kodPotvrda)) {
-            Toast.makeText(context, "Potvrda koda za oporavak nije uspjela!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        this.kod.value = kod;
-        return true;
-    }
-
-    fun register(context: Context) {
+    fun register(context: Context, onNavigationToLogin: () -> Unit) {
         viewModelScope.launch {
             try {
                 val korisnik = repository.createUser(
@@ -86,13 +69,17 @@ class RegisterViewModel : ViewModel() {
                         oib = oib.value,
                         email = email.value,
                         pin = pin.value,
-                        kod = kod.value
                     )
                 )
 
                 Toast.makeText(context, "Registracija uspješna!", Toast.LENGTH_LONG).show();
-            } catch (ex: Exception) {
-                Log.d("ErrorAPI", "register exception: ${ex.message}")
+                onNavigationToLogin();
+            } catch (ex: HttpException) {
+                val response = ex.response()?.errorBody()?.string()?.let {
+                    JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
+                };
+                Log.d("ErrorAPI", "register exception: ${response}")
+                Toast.makeText(context, "Pogreška: ${response}", Toast.LENGTH_LONG).show();
             }
         }
     }

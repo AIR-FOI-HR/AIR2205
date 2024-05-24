@@ -17,12 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.FocusRequester
@@ -43,7 +41,8 @@ import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 @Composable
 fun RegisterView(
     viewModel: RegisterViewModel,
-    navController: NavController
+    onNavigationToLogin: () -> Unit,
+    onNavigationToRegisterPin: () -> Unit
 ) {
     var ime by viewModel.ime
     var prezime by viewModel.prezime
@@ -110,7 +109,7 @@ fun RegisterView(
                     keyboardType = KeyboardType.Number
                 )
                 Button(
-                    onClick = { if(viewModel.checkUserData(context, ime, prezime, email, oib)) navController.navigate("register/pin") },
+                    onClick = { if(viewModel.checkUserData(context, ime, prezime, email, oib)) onNavigationToRegisterPin() },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                     Text(text = "Registracija")
                 }
@@ -120,11 +119,10 @@ fun RegisterView(
                     Text("Već ste registrirani? ", fontSize = 12.sp)
                     Text("Prijavite se!",
                         fontSize = 12.sp,
-                        modifier = Modifier.clickable {  },
+                        modifier = Modifier.clickable { onNavigationToLogin() },
                         color = Primary,
                         style = TextStyle(textDecoration = TextDecoration.Underline))
                 }
             }
-
     }
 }

@@ -1,4 +1,4 @@
-package hr.foi.air.mbankingapp.ui.views.Register
+package hr.foi.air.mbankingapp.ui.views.Login
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -26,24 +26,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hr.foi.air.mbankingapp.ui.composables.FormTextField
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.theme.Secondary
-import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
+import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterKodView(
-    viewModel: RegisterViewModel,
-    navController: NavController
+fun LoginRestoreView(
+    viewModel: LoginViewModel,
+    onNavigateToLogin: () -> Unit,
+    onNavigateToNext: () -> Unit,
 ) {
-    var kod by remember { mutableStateOf("") }
-    var kodPotvrda by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
 
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
@@ -68,44 +67,32 @@ fun RegisterKodView(
             Row (modifier = Modifier
                 .padding(top = 40.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text("Dobrodošli na ", fontSize = 24.sp)
-                Text("mBanking", fontSize = 24.sp, color = Primary)
-                Text("!", fontSize = 24.sp)
+                Text("Oporavak računa", fontSize = 24.sp)
             }
             Row (modifier = Modifier
                 .padding(top = 10.dp, bottom = 30.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text("Odaberite kod za oporavak", fontSize = 16.sp, color = Color.Gray)
+                Text("Unesite podatke", fontSize = 16.sp, color = Color.Gray)
             }
             FormTextField(
                 modifier = Modifier.focusRequester(focusRequester),
-                label = { Text("Kod za oporavak") },
-                value = kod,
-                onValueChange = {kod = it},
-                keyboardType = KeyboardType.Number,
-                visualTransformation = PasswordVisualTransformation()
-            )
-            FormTextField(
-                modifier = Modifier,
-                label = { Text("Potvrdite kod za oporavak") },
-                value = kodPotvrda,
-                onValueChange = {kodPotvrda = it},
-                isLast = true,
-                keyboardType = KeyboardType.Number,
-                visualTransformation = PasswordVisualTransformation()
+                label = { Text("E-mail") },
+                value = email,
+                onValueChange = {email = it},
+                isLast = true
             )
             Row (modifier = Modifier
-                .padding(top = 10.dp, bottom = 30.dp)
+                .padding(top = 20.dp, bottom = 30.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(
-                    onClick = { navController.popBackStack() },
+                    onClick = { onNavigateToLogin()  },
                     colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
-                    Text(text = "Natrag")
+                    Text(text = "Odustani")
                 }
                 Button(
-                    onClick = { if(viewModel.checkKod(context, kod, kodPotvrda)) viewModel.register(context) },
+                    onClick = { viewModel.restore(context, email, onNavigateToNext)  },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
-                    Text(text = "Završi")
+                    Text(text = "Pošalji")
                 }
             }
         }

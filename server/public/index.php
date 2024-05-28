@@ -5,8 +5,6 @@ use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
 use DI\Container;
 use App\Middleware\AddJsonResponseHeader;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Handlers\Strategies\RequestResponseArgs;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -30,7 +28,7 @@ $error_middleware = $app->addErrorMiddleware(true, true, true);
 $error_handler = $error_middleware->getDefaultErrorHandler();
 $error_handler->forceContentType('application/json');
 
-$app->group('/api/users', function (RouteCollectorProxy $group) {
+$app->group('/api/korisnici', function (RouteCollectorProxy $group) {
     $group->get('', App\Controllers\KorisnikController::class . ':get_users');
     $group->get('/{id}', App\Controllers\KorisnikController::class . ':get_user');
     $group->post('', App\Controllers\KorisnikController::class . ':create_user');
@@ -38,6 +36,11 @@ $app->group('/api/users', function (RouteCollectorProxy $group) {
     $group->delete('/{id}', App\Controllers\KorisnikController::class . ':delete_user');
     $group->post('/auth', App\Controllers\KorisnikController::class . ':login_user');
     $group->post('/restore', App\Controllers\KorisnikController::class . ':restore_user');
+});
+
+$app->group('/api/racuni', function (RouteCollectorProxy $group) {
+    $group->get('/{iban}', App\Controllers\RacunController::class . ':get_racun');
+    $group->get('/korisnik/{kor_id}', App\Controllers\RacunController::class . ':get_racuni');
 });
 
 $app->run();

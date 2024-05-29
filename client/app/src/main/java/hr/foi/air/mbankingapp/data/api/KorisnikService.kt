@@ -10,18 +10,18 @@ import retrofit2.http.Path
 
 interface KorisnikService {
     @Headers("Content-Type: application/json")
-    @POST("users")
+    @POST("korisnici")
     suspend fun createUser(@Body korisnik: Korisnik): Korisnik
 
     @Headers("Content-Type: application/json")
-    @PATCH("users/{id}")
+    @PATCH("korisnici/{id}")
     suspend fun updateUser(@Path("id") id: Int, @Body korisnik: Korisnik): Korisnik
 
     @Headers("Content-Type: application/json")
-    @POST("users/auth")
+    @POST("korisnici/auth")
     suspend fun authUser(@Body korisnik: Korisnik): Korisnik
 
     @Headers("Content-Type: application/json")
-    @POST("users/restore")
+    @POST("korisnici/restore")
     suspend fun restoreUser(@Body korisnik: Korisnik): Korisnik
 }

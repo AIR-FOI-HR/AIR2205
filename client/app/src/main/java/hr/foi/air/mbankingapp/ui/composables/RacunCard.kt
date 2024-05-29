@@ -33,6 +33,7 @@ fun RacunCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .padding(horizontal = 10.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(30.dp),
         color = BoxColor

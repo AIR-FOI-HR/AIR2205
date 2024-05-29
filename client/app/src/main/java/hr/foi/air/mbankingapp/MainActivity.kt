@@ -13,8 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import hr.foi.air.mbankingapp.ui.theme.MBankingAppTheme
+import hr.foi.air.mbankingapp.ui.viewmodels.HomeViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
+import hr.foi.air.mbankingapp.ui.views.HomeView
 import hr.foi.air.mbankingapp.ui.views.Login.LoginRestoreFinalView
 import hr.foi.air.mbankingapp.ui.views.Login.LoginRestoreView
 import hr.foi.air.mbankingapp.ui.views.Login.LoginView
@@ -43,7 +45,8 @@ class MainActivity : ComponentActivity() {
                                         popUpTo("login") { inclusive = true }
                                     }
                                 },
-                                onNavigateToRestore = { navController.navigate("login/restore"); }
+                                onNavigateToRestore = { navController.navigate("login/restore"); },
+                                onSuccesfullLogin = { navController.navigate("home"); }
                             )
                         }
                         composable("login/restore") {
@@ -84,6 +87,9 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onNavigationToBack = { navController.popBackStack(); }
                             )
+                        }
+                        composable("home") {
+                            HomeView()
                         }
                     }
                 }

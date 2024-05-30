@@ -55,8 +55,8 @@ class RacunRepository {
         return $racuni;
     }
 
-    public function get(string $iban): array {
-        $racuni = array();
+    public function get(string $iban): ?Racun {
+        $racun = null;
         $sql = "SELECT 
                     iban, vrijedi_od, aktivnost, stanje,
                     CONCAT(k.ime, ' ', k.prezime) as vlasnik,
@@ -92,11 +92,9 @@ class RacunRepository {
                     $row->valuta,
                     $row->vrsta_rac,
                 );
-
-                array_push($racuni, $racun);
             } 
         }
 
-        return $racuni;
+        return $racun;
     }
 }

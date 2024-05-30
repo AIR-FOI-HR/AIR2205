@@ -26,7 +26,9 @@ fun RootNavigation(navController: NavHostController) {
             registerViewModel
         )
         composable("home_root") {
-            HomeRootView()
+            HomeRootView(
+                navController
+            )
         }
     }
 }

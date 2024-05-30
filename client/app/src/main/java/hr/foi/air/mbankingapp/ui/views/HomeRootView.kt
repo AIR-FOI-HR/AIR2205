@@ -3,6 +3,7 @@ package hr.foi.air.mbankingapp.ui.views
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Notifications
@@ -42,6 +43,7 @@ data class BottomNavigationItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeRootView(
+    navControllerRoot: NavHostController,
     navController: NavHostController = rememberNavController()
 ) {
     val bottomBarItems = listOf<BottomNavigationItem>(
@@ -71,6 +73,21 @@ fun HomeRootView(
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = "Obavijesti",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            navControllerRoot.navigate("auth") {
+                                popUpTo("home_root") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ExitToApp,
+                            contentDescription = "Odjava",
                             tint = Color.White
                         )
                     }

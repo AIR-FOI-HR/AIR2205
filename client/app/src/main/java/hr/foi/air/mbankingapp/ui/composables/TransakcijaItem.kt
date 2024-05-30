@@ -28,7 +28,7 @@ fun TransakcijaItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 10.dp, vertical = 5.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
         color = TransakcijaBoxColor

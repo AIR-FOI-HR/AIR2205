@@ -10,39 +10,70 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.foi.air.mbankingapp.data.context.Auth
 import hr.foi.air.mbankingapp.data.models.Racun
+import hr.foi.air.mbankingapp.data.models.Transakcija
 import hr.foi.air.mbankingapp.data.repository.RacunRepository
+import hr.foi.air.mbankingapp.data.repository.TransakcijaRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.HttpException
 
 class HomeViewModel: ViewModel() {
-    private val repository = RacunRepository();
+    private val racunRepository = RacunRepository();
+    private val transakcijaRepository = TransakcijaRepository()
+
     private val _racuni: MutableLiveData<List<Racun>> = MutableLiveData(mutableListOf());
     val racuni: LiveData<List<Racun>> = _racuni
 
-    var error = mutableStateOf(false);
-    var errorText = mutableStateOf("");
+    private val _transakcije: MutableLiveData<List<Transakcija>> = MutableLiveData(mutableListOf());
+    val transakcije: LiveData<List<Transakcija>> = _transakcije
+
+    var errorRacuni = mutableStateOf(false);
+    var errorRacuniText = mutableStateOf("");
+
+    var errorTran = mutableStateOf(false);
+    var errorTranText = mutableStateOf("");
 
     init {
         loadRacuni()
+        loadTransakcije()
     }
 
     private fun loadRacuni() {
         if (Auth.loggedUser == null) return;
-        error.value = false;
+        errorRacuni.value = false;
         viewModelScope.launch {
             try {
-                _racuni.value = repository.getRacuniKorisnika(Auth.loggedUser?.id!!);
+                _racuni.value = racunRepository.getRacuniKorisnika(Auth.loggedUser?.id!!);
             } catch (ex: HttpException) {
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
                 };
 
                 Log.d("ErrorAPI", "racuni exception: ${response}");
-                error.value = true;
+                errorRacuni.value = true;
                 if (response != null) {
-                    errorText.value = response;
+                    errorRacuniText.value = response;
+                }
+            }
+        }
+    }
+
+    private fun loadTransakcije() {
+        if (Auth.loggedUser == null) return;
+        errorTran.value = false;
+        viewModelScope.launch {
+            try {
+                _transakcije.value = transakcijaRepository.getTransakcijeKorisnika(Auth.loggedUser?.id!!, 5);
+            } catch (ex: HttpException) {
+                val response = ex.response()?.errorBody()?.string()?.let {
+                    JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
+                };
+
+                Log.d("ErrorAPI", "transakcije exception: ${response}");
+                errorTran.value = true;
+                if (response != null) {
+                    errorTranText.value = response;
                 }
             }
         }

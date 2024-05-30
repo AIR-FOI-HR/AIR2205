@@ -19,4 +19,8 @@ object RetrofitInstance {
     val getRacunService: RacunService by lazy {
         retrofit.create(RacunService::class.java)
     }
+
+    val getTransakcijaService: TransakcijaService by lazy {
+        retrofit.create(TransakcijaService::class.java)
+    }
 }

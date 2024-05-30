@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -49,17 +51,23 @@ import hr.foi.air.mbankingapp.ui.composables.RacunCard
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.viewmodels.HomeViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import hr.foi.air.mbankingapp.ui.composables.TransakcijaItem
 import hr.foi.air.mbankingapp.ui.theme.UnselectedColor
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeView(
     innerPadding: PaddingValues,
     viewModel: HomeViewModel = viewModel()
 ) {
     val racuni by viewModel.racuni.observeAsState()
-    val error by viewModel.error
-    val errorText by viewModel.errorText
+    val transakcije by viewModel.transakcije.observeAsState()
+    
+    val errorRacuni by viewModel.errorRacuni
+    val errorRacuniText by viewModel.errorRacuniText
+
+    val errorTran by viewModel.errorTran
+    val errorTranText by viewModel.errorTranText
 
     Column (
         modifier = Modifier
@@ -68,16 +76,14 @@ fun HomeView(
             .padding(top = 20.dp)
     ) {
         if (racuni?.isEmpty() == true) {
-            if (error) {
-                if (errorText != "") {
-                    Text(errorText, textAlign = TextAlign.Center)
+            if (errorRacuni) {
+                if (errorRacuniText != "") {
+                    Text(errorRacuniText, textAlign = TextAlign.Center)
                 } else {
                     Text("Greška kod učitavanja popisa računa.")
                 }
             } else {
-                CircularProgressIndicator(
-                    modifier = Modifier.fillMaxSize()
-                )
+                CircularProgressIndicator()
             }
         } else {
             val pagerState = rememberPagerState {
@@ -104,7 +110,28 @@ fun HomeView(
         )
         Divider(
             color = Color.Black,
-            modifier = Modifier.padding(top = 5.dp)
+            modifier = Modifier.padding(top = 5.dp, bottom = 10.dp)
         )
+        if (transakcije?.isEmpty() != true) {
+            LazyColumn {
+                items(transakcije!!) { transakcija ->
+                        TransakcijaItem(
+                            primatelj = if (transakcija.iznos.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
+                            iznos = transakcija.iznos,
+                            onClick = {}
+                        )
+                }
+            }
+        } else {
+            if (errorTran) {
+                if (errorTranText != "") {
+                    Text(errorTranText, textAlign = TextAlign.Center)
+                } else {
+                    Text("Greška kod učitavanja popisa transakcija.")
+                }
+            } else {
+                CircularProgressIndicator()
+            }
+        }
     }
 }

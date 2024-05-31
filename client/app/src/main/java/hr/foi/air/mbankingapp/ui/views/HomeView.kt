@@ -58,6 +58,7 @@ import hr.foi.air.mbankingapp.ui.theme.UnselectedColor
 @Composable
 fun HomeView(
     innerPadding: PaddingValues,
+    onNavigateToRacun: (String) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     val racuni by viewModel.racuni.observeAsState()
@@ -98,7 +99,9 @@ fun HomeView(
                         vrsrac = racuni?.get(currentPage)!!.vrstaRacuna,
                         iban = racuni?.get(currentPage)!!.iban,
                         stanje = racuni?.get(currentPage)!!.stanje.toString(),
-                        onClick = {}
+                        onClick = {
+                            onNavigateToRacun(racuni?.get(currentPage)!!.iban)
+                        }
                     )
                 }
             }

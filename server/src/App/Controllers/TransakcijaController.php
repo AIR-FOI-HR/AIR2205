@@ -45,4 +45,21 @@ class TransakcijaController {
         $response->getBody()->write($body);
         return $response;
     }
+
+    public function get_transakcija(Request $request, Response $response, string $tran_id) : Response {
+        try {
+            $data = $this->repository->get(intval($tran_id));
+        } catch (ErrorException $ex) {
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, message: $ex->getMessage());
+        }
+
+        if ($data == null) {
+            throw new \Slim\Exception\HttpNotFoundException($request, message: "Nije pronađena transakcija.");
+        }
+
+        $body = json_encode($data);
+
+        $response->getBody()->write($body);
+        return $response;
+    }
 }

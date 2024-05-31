@@ -117,4 +117,53 @@ class TransakcijaRepository {
 
         return $transakcije;
     }
+
+    public function get(int $tran_id): ?Transakcija {
+        $transakcija = null;
+        $sql = "SELECT
+                    t.tran_id, t.opis_placanja, t.iznos,
+                    t.model, t.poziv_na_broj,
+                    t.datum, t.iban_platitelj, t.iban_primatelj,
+                    CONCAT(kpl.ime, ' ', kpl.prezime) platitelj_vlasnik,
+                    CONCAT(kpr.ime, ' ', kpr.prezime) primatelj_vlasnik
+                FROM transakcija t
+                LEFT JOIN racun rpl on rpl.iban = t.iban_platitelj
+                LEFT JOIN racun rpr on rpr.iban = t.iban_primatelj
+                LEFT JOIN korisnik kpl on kpl.kor_id = rpl.kor_id
+                LEFT JOIN korisnik kpr on kpr.kor_id = rpr.kor_id
+                WHERE t.tran_id = ?";
+
+        $this->database->connect();
+        $stmt = $this->database->get_connection()->prepare($sql);
+        $stmt->bind_param("i", $tran_id);
+
+        if (!$stmt->execute()) {
+            trigger_error("Error executing query: " . $stmt->error);
+            $this->database->disconnect();
+            throw new ErrorException("Database error occured!");
+        }
+
+        $data = $stmt->get_result();
+        $this->database->disconnect();
+
+        while ($row = $data->fetch_object()) {
+            if ($row) {
+                $datum = new DateTimeImmutable($row->datum);
+                $transakcija = new Transakcija(
+                    intval($row->tran_id), 
+                    $row->opis_placanja,
+                    $row->iznos,
+                    $row->model,
+                    $row->poziv_na_broj,
+                    $datum->format('d.m.Y.'),
+                    $row->iban_platitelj, 
+                    $row->platitelj_vlasnik,
+                    $row->iban_primatelj, 
+                    $row->primatelj_vlasnik,
+                );
+            } 
+        }
+
+        return $transakcija;
+    }
 }

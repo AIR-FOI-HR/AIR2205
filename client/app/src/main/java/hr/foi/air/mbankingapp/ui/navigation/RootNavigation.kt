@@ -9,8 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
-import hr.foi.air.mbankingapp.ui.views.HomeRootView
-import hr.foi.air.mbankingapp.ui.views.HomeView
+import hr.foi.air.mbankingapp.ui.views.Home.HomeRootView
 import hr.foi.air.mbankingapp.ui.views.RacunView
 import hr.foi.air.mbankingapp.ui.views.TransakcijaView
 

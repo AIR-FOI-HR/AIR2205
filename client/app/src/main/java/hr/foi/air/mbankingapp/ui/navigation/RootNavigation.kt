@@ -12,6 +12,7 @@ import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 import hr.foi.air.mbankingapp.ui.views.HomeRootView
 import hr.foi.air.mbankingapp.ui.views.HomeView
 import hr.foi.air.mbankingapp.ui.views.RacunView
+import hr.foi.air.mbankingapp.ui.views.TransakcijaView
 
 @Composable
 fun RootNavigation(navController: NavHostController) {
@@ -39,6 +40,19 @@ fun RootNavigation(navController: NavHostController) {
         ) { navBackStackEntry ->
             RacunView(
                 iban = navBackStackEntry.arguments?.getString("iban") ?: "?",
+                onNavigateToBack = {
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }
+            )
+        }
+        composable(
+            route = "transakcija/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { navBackStackEntry ->
+            TransakcijaView (
+                id = navBackStackEntry.arguments?.getInt("id") ?: 0,
                 onNavigateToBack = {
                     if (navController.previousBackStackEntry != null) {
                         navController.navigateUp()

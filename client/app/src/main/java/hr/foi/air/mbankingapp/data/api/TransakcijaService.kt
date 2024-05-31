@@ -6,9 +6,12 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TransakcijaService {
-    @GET("transakcije/{iban}")
+    @GET("transakcije/racun/{iban}")
     suspend fun getTransakcijeRacuna(@Path("iban") iban: String): List<Transakcija>
 
     @GET("transakcije/korisnik/{id}")
     suspend fun getTransakcijeKorisnika(@Path("id") id: Int, @Query("numRows") numRows: Int = 0): List<Transakcija>
+
+    @GET("transakcije/{id}")
+    suspend fun getTransakcija(@Path("id") id: Int): Transakcija
 }

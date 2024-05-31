@@ -59,6 +59,7 @@ import hr.foi.air.mbankingapp.ui.theme.UnselectedColor
 fun HomeView(
     innerPadding: PaddingValues,
     onNavigateToRacun: (String) -> Unit,
+    onNavigateToTransakcija: (Int) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     val racuni by viewModel.racuni.observeAsState()
@@ -121,7 +122,7 @@ fun HomeView(
                         TransakcijaItem(
                             primatelj = if (transakcija.iznos.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
                             iznos = transakcija.iznos,
-                            onClick = {}
+                            onClick = { onNavigateToTransakcija(transakcija.id!!) }
                         )
                 }
             }

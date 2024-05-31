@@ -13,4 +13,8 @@ class TransakcijaRepository {
     suspend fun getTransakcijeRacuna(iban: String) : List<Transakcija> {
         return transakcijaService.getTransakcijeRacuna(iban);
     }
+
+    suspend fun getTransakcija(id: Int) : Transakcija {
+        return transakcijaService.getTransakcija(id);
+    }
 }

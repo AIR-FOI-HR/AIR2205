@@ -20,11 +20,10 @@ class LoginViewModel : ViewModel() {
 
     private var restoreKorisnik = mutableStateOf(Korisnik());
 
-    fun login(context: Context, email: String, pin: String) : Boolean {
-        var success = false;
+    fun login(context: Context, email: String, pin: String, onSuccesfullLogin: () -> Unit) {
         if (email.isEmpty() || pin.isEmpty()) {
             Toast.makeText(context, "Nisu popunjeni svi podaci!", Toast.LENGTH_SHORT).show();
-            return success;
+            return;
         }
 
         viewModelScope.launch {
@@ -32,7 +31,7 @@ class LoginViewModel : ViewModel() {
                 val korisnik = repository.authUser(Korisnik(email = email, pin = pin));
                 Auth.loggedUser = korisnik;
                 Toast.makeText(context, "Prijava uspješna!", Toast.LENGTH_SHORT).show();
-                success = true;
+                onSuccesfullLogin();
             } catch (ex: HttpException) {
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
@@ -42,7 +41,6 @@ class LoginViewModel : ViewModel() {
                 Toast.makeText(context, "Pogreška: ${response}", Toast.LENGTH_SHORT).show();
             }
         }
-        return success;
     }
 
     fun restore(context: Context, email: String, onNavigateToNext: () -> Unit) {

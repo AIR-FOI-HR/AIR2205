@@ -44,7 +44,8 @@ import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 fun LoginView(
     viewModel: LoginViewModel,
     onNavigateToRegister: () -> Unit,
-    onNavigateToRestore: () -> Unit
+    onNavigateToRestore: () -> Unit,
+    onSuccesfullLogin: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
@@ -97,7 +98,7 @@ fun LoginView(
                 visualTransformation = PasswordVisualTransformation()
             )
             Button(
-                onClick = { viewModel.login(context, email, pin) },
+                onClick = { viewModel.login(context, email, pin, onSuccesfullLogin) },
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                 Text(text = "Prijava")
             }

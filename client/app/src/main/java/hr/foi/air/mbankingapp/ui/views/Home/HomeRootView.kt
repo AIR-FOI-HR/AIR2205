@@ -1,6 +1,5 @@
-package hr.foi.air.mbankingapp.ui.views
+package hr.foi.air.mbankingapp.ui.views.Home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExitToApp

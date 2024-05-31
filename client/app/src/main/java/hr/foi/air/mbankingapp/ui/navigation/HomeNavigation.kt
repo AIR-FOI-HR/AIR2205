@@ -7,12 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import hr.foi.air.mbankingapp.ui.views.HomeView
-import hr.foi.air.mbankingapp.ui.views.RacunView
+import hr.foi.air.mbankingapp.ui.views.Home.HomeView
+import hr.foi.air.mbankingapp.ui.views.Home.SveTransakcijeView
 
 @Composable
 fun HomeNavigation(
@@ -37,9 +35,12 @@ fun HomeNavigation(
             )
         }
         composable("transakcije") {
-            Column (modifier = Modifier.padding(innerPadding)) {
-                Text("Transakcije")
-            }
+            SveTransakcijeView(
+                innerPadding = innerPadding,
+                onNavigateToTransakcija = { id ->
+                    navControllerRoot.navigate("transakcija/$id")
+                }
+            )
         }
         composable("bankomati") {
             Column (modifier = Modifier.padding(innerPadding)) {

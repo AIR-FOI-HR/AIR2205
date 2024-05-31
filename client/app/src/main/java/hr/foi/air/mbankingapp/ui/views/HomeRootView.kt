@@ -126,7 +126,8 @@ fun HomeRootView(
     ) { innerPadding ->
         HomeNavigation(
             innerPadding = innerPadding,
-            navController = navController
+            navController = navController,
+            navControllerRoot = navControllerRoot
         )
     }
 }

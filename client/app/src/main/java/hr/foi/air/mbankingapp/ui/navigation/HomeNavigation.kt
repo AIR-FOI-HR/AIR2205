@@ -7,14 +7,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import hr.foi.air.mbankingapp.ui.views.HomeView
+import hr.foi.air.mbankingapp.ui.views.RacunView
 
 @Composable
 fun HomeNavigation(
     innerPadding: PaddingValues,
-    navController: NavHostController
+    navController: NavHostController,
+    navControllerRoot: NavHostController
 ) {
     NavHost(
         navController = navController,
@@ -22,7 +26,12 @@ fun HomeNavigation(
         startDestination = "home"
     ) {
         composable("home") {
-            HomeView(innerPadding = innerPadding)
+            HomeView(
+                innerPadding = innerPadding,
+                onNavigateToRacun = { iban ->
+                    navControllerRoot.navigate("racun/$iban")
+                }
+            )
         }
         composable("transakcije") {
             Column (modifier = Modifier.padding(innerPadding)) {

@@ -1,5 +1,6 @@
 package hr.foi.air.mbankingapp.ui.views.Home
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -26,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -52,12 +55,18 @@ fun HomeRootView(
         BottomNavigationItem("Postavke", Icons.Outlined.Settings, "postavke"),
     )
 
+    var focusManager = LocalFocusManager.current;
+
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
 
     Scaffold (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus(true) })
+            },
         topBar = {
             TopAppBar(
                 title = {

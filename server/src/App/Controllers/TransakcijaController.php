@@ -30,8 +30,21 @@ class TransakcijaController {
 
     public function get_transakcije_korisnika(Request $request, Response $response, string $kor_id) : Response {
         try {
-            $numRows = $request->getQueryParams()["numRows"] ?? "0";
-            $data = $this->repository->get_all_kor(intval($kor_id), intval($numRows));
+            $num_rows = $request->getQueryParams()["numRows"] ?? "0";
+            $vrsta_tran = $request->getQueryParams()["vrsta_tran"] ?? "";
+            $od_datuma = $request->getQueryParams()["od_datuma"] ?? "";
+            $do_datuma = $request->getQueryParams()["do_datuma"] ?? "";
+            $od_iznosa = $request->getQueryParams()["od_iznosa"] ?? "";
+            $do_iznosa = $request->getQueryParams()["do_iznosa"] ?? "";
+            $data = $this->repository->get_all_kor(intval(
+                $kor_id), 
+                intval($num_rows), 
+                $vrsta_tran, 
+                $od_datuma, 
+                $do_datuma, 
+                $od_iznosa, 
+                $do_iznosa
+            );
         } catch (ErrorException $ex) {
             throw new \Slim\Exception\HttpInternalServerErrorException($request, message: $ex->getMessage());
         }

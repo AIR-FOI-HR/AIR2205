@@ -63,9 +63,46 @@ class TransakcijaRepository {
         return $transakcije;
     }
 
-    public function get_all_kor(int $kor_id, int $numRows) : array {
+    public function get_all_kor(
+        int $kor_id, 
+        int $num_rows, 
+        string $vrsta_tran = "",
+        string $od_datuma = "",
+        string $do_datuma = "",
+        string $od_iznosa = "",
+        string $do_iznosa = ""
+    ) : array {
         $transakcije = array();
-        $numRowsStr = $numRows != 0 ? "LIMIT $numRows" : "";
+        $num_rows_str = $num_rows != 0 ? "LIMIT $num_rows" : "";
+        $filter = "";
+        
+        if ($vrsta_tran != "") {
+            if ($vrsta_tran == "ISPLATA") {
+                $filter = $filter . " kpl.kor_id = $kor_id ";
+            } else if ($vrsta_tran == "UPLATA") {
+                $filter = $filter . " kpr.kor_id = $kor_id ";
+            } else {
+                $filter = $filter . " (kpl.kor_id = $kor_id OR kpr.kor_id = $kor_id) ";
+            }
+        } else {
+            $filter = $filter . " (kpl.kor_id = $kor_id OR kpr.kor_id = $kor_id) ";
+        }
+
+        if ($od_datuma != "") {
+            $datum = new DateTimeImmutable($od_datuma);
+            $filter = $filter . " and t.datum >= '" . $datum->format('Y-m-d') . "'";
+        }
+
+        if ($do_datuma != "") {
+            $datum = new DateTimeImmutable($do_datuma);
+            $filter = $filter . " and t.datum <= '" . $datum->format('Y-m-d') . "'";
+        }
+
+
+        $filter = $filter . ($od_iznosa != "" ? " and t.iznos >= " . $od_iznosa : "");
+        $filter = $filter . ($do_iznosa != "" ? " and t.iznos <= " . $do_iznosa : "");
+
+
         $sql = "SELECT
                     t.tran_id, t.opis_placanja, 
                     CONCAT(case when kpl.kor_id = ? then '-' else '+' end, cast(round(t.iznos,2) as char(100))) as iznos,
@@ -78,13 +115,13 @@ class TransakcijaRepository {
                 LEFT JOIN racun rpr on rpr.iban = t.iban_primatelj
                 LEFT JOIN korisnik kpl on kpl.kor_id = rpl.kor_id
                 LEFT JOIN korisnik kpr on kpr.kor_id = rpr.kor_id
-                WHERE kpl.kor_id = ? OR kpr.kor_id = ?
-                ORDER BY t.datum desc
-                $numRowsStr";
+                WHERE $filter
+                ORDER BY t.datum DESC
+                $num_rows_str";
 
         $this->database->connect();
         $stmt = $this->database->get_connection()->prepare($sql);
-        $stmt->bind_param("iii", $kor_id, $kor_id, $kor_id);
+        $stmt->bind_param("i", $kor_id);
 
         if (!$stmt->execute()) {
             trigger_error("Error executing query: " . $stmt->error);

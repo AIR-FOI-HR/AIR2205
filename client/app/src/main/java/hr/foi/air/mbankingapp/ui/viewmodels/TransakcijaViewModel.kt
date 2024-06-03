@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.foi.air.mbankingapp.data.context.Auth
 import hr.foi.air.mbankingapp.data.models.Transakcija
+import hr.foi.air.mbankingapp.data.models.TransakcijaFilter
 import hr.foi.air.mbankingapp.data.repository.TransakcijaRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.HttpException
+import retrofit2.http.Query
 
 class TransakcijaViewModel: ViewModel() {
     private val repository = TransakcijaRepository();
@@ -24,6 +26,8 @@ class TransakcijaViewModel: ViewModel() {
 
     var errorTran = mutableStateOf(false);
     var errorTranText = mutableStateOf("");
+
+    var filter = mutableStateOf("");
 
     fun loadTransakcija(id: Int) {
         viewModelScope.launch {
@@ -38,13 +42,37 @@ class TransakcijaViewModel: ViewModel() {
         }
     }
 
-    fun loadTransakcije() {
+    fun loadTransakcije(
+        vrstaTran: String = "",
+        odDatuma: String = "",
+        doDatuma: String = "",
+        odIznosa: String = "",
+        doIznosa: String = ""
+    ) {
         if (Auth.loggedUser == null) return;
         errorTran.value = false;
+
+        filter.value = ""
+
+        if (vrstaTran != "") filter.value += "Vrsta transakcije: $vrstaTran; "
+        if (odDatuma != "") filter.value += "Od datuma: $odDatuma; "
+        if (doDatuma != "") filter.value += "Do datuma: $doDatuma; "
+        if (odIznosa != "") filter.value += "Od iznosa: $odIznosa; "
+        if (doIznosa != "") filter.value += "Do iznosa: $doIznosa; "
+
         viewModelScope.launch {
             try {
-                _transakcije.value = repository.getTransakcijeKorisnika(Auth.loggedUser?.id!!);
+                _transakcije.value = repository.getTransakcijeKorisnika(
+                    Auth.loggedUser?.id!!,
+                    0,
+                    vrstaTran,
+                    odDatuma,
+                    doDatuma,
+                    odIznosa,
+                    doIznosa
+                );
             } catch (ex: HttpException) {
+                _transakcije.value = emptyList()
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
                 };

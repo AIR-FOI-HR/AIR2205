@@ -75,4 +75,22 @@ class TransakcijaController {
         $response->getBody()->write($body);
         return $response;
     }
+
+    public function create_transakcija(Request $request, Response $response) : Response {
+        $body = $request->getParsedBody();
+        
+        try {
+            $data = $this->repository->create($body);
+        } catch (ErrorException $ex) {
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, message: $ex->getMessage());
+        }
+
+        if ($data == null) {
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, message: "Transakcija nije provedena. Provjerite podatke.");
+        }
+
+        $body = json_encode($data);
+        $response->getBody()->write($body);
+        return $response->withStatus(201);
+    }
 }

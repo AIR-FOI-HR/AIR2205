@@ -203,4 +203,26 @@ class TransakcijaRepository {
 
         return $transakcija;
     }
+
+    public function create(array $data) : ?Transakcija {
+        $sql = "INSERT INTO transakcija 
+            (opis_placanja, iznos, model, poziv_na_broj, iban_platitelj, iban_primatelj) values (?,?,?,?,?,?);";
+
+        $this->database->connect();
+        $stmt = $this->database->get_connection()->prepare($sql);
+        $stmt->bind_param("sdsssss", $data["opis_placanja"], $data["iznos"], $data["model"], $data["poziv_na_broj"],
+            $data["platitelj_iban"], $data["primatelj_iban"]
+        );
+
+        if (!$stmt->execute()) {
+            trigger_error("Error executing query: " . $stmt->error);
+            $this->database->disconnect();
+            throw new ErrorException("Database error occured!");
+        }
+
+        $inserted = $stmt->insert_id;
+        $this->database->disconnect();
+
+        return $this->get($inserted);
+    }
 }

@@ -47,6 +47,7 @@ $app->group('/api/transakcije', function (RouteCollectorProxy $group) {
     $group->get('/racun/{iban}', App\Controllers\TransakcijaController::class . ':get_transakcije');
     $group->get('/korisnik/{kor_id}', App\Controllers\TransakcijaController::class . ':get_transakcije_korisnika');
     $group->get('/{tran_id}', App\Controllers\TransakcijaController::class . ':get_transakcija');
+    $group->post('', App\Controllers\TransakcijaController::class . ':create_transakcija');
 });
 
 $app->run();

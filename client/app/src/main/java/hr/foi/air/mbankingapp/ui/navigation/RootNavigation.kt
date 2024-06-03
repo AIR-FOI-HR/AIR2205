@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 import hr.foi.air.mbankingapp.ui.views.Home.HomeRootView
+import hr.foi.air.mbankingapp.ui.views.KreirajTransakcijuView
 import hr.foi.air.mbankingapp.ui.views.QrRacunView
 import hr.foi.air.mbankingapp.ui.views.RacunView
 import hr.foi.air.mbankingapp.ui.views.TransakcijaView
@@ -69,6 +70,17 @@ fun RootNavigation(navController: NavHostController) {
         ) { navBackStackEntry ->
             QrRacunView(
                 iban = navBackStackEntry.arguments?.getString("iban") ?: "?",
+                onNavigateToBack = {
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }
+            )
+        }
+        composable(
+            route = "transakcija/nova"
+        ) { navBackStackEntry ->
+            KreirajTransakcijuView (
                 onNavigateToBack = {
                     if (navController.previousBackStackEntry != null) {
                         navController.navigateUp()

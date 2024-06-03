@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.foi.air.mbankingapp.data.context.Auth
 import hr.foi.air.mbankingapp.data.models.Transakcija
-import hr.foi.air.mbankingapp.data.models.TransakcijaFilter
 import hr.foi.air.mbankingapp.data.repository.TransakcijaRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.HttpException
-import retrofit2.http.Query
 
 class TransakcijaViewModel: ViewModel() {
     private val repository = TransakcijaRepository();

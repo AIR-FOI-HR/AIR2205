@@ -2,8 +2,6 @@ package hr.foi.air.mbankingapp.data.repository
 
 import hr.foi.air.mbankingapp.data.api.RetrofitInstance
 import hr.foi.air.mbankingapp.data.models.Transakcija
-import hr.foi.air.mbankingapp.data.models.TransakcijaFilter
-import retrofit2.http.Query
 
 class TransakcijaRepository {
     private val transakcijaService = RetrofitInstance.getTransakcijaService;
@@ -26,5 +24,9 @@ class TransakcijaRepository {
 
     suspend fun getTransakcija(id: Int) : Transakcija {
         return transakcijaService.getTransakcija(id);
+    }
+
+    suspend fun  createTransakcija(transakcija: Transakcija) : Transakcija {
+        return transakcijaService.createTransakcija(transakcija);
     }
 }

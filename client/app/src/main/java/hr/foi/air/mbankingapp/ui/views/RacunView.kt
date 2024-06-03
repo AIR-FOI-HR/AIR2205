@@ -42,6 +42,7 @@ import hr.foi.air.mbankingapp.ui.viewmodels.RacunViewModel
 fun RacunView(
     iban: String,
     onNavigateToBack: () -> Unit,
+    onNavigateToQr: (String) -> Unit,
     viewModel: RacunViewModel = viewModel()
 ) {
     var racun by viewModel.racun
@@ -93,7 +94,7 @@ fun RacunView(
                 ) {
                     Button(
                         colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                        onClick = { /*TODO*/ },
+                        onClick = { onNavigateToQr(racun!!.iban) },
                         shape = RoundedCornerShape(20.dp)
                     ) {
                         Icon(imageVector = Icons.Filled.QrCode, contentDescription = "QR kod", modifier = Modifier.size(48.dp))
@@ -111,5 +112,5 @@ fun RacunView(
 @Preview(showBackground = true)
 @Composable
 fun RacunViewPreview() {
-    RacunView("HR0000000000000000000", {})
+    RacunView("HR0000000000000000000", {}, {})
 }

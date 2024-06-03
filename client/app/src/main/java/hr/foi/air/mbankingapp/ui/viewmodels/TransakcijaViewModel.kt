@@ -72,6 +72,7 @@ class TransakcijaViewModel: ViewModel() {
                     doIznosa
                 );
             } catch (ex: HttpException) {
+                _transakcije.value = emptyList()
                 val response = ex.response()?.errorBody()?.string()?.let {
                     JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
                 };

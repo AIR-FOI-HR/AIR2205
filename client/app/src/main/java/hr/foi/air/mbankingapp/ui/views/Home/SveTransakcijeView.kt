@@ -1,6 +1,7 @@
 package hr.foi.air.mbankingapp.ui.views.Home
 
 import android.app.DatePickerDialog
+import android.widget.DatePicker
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -38,12 +39,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -74,6 +77,9 @@ import hr.foi.air.mbankingapp.ui.composables.TransakcijaItem
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.theme.Secondary
 import hr.foi.air.mbankingapp.ui.viewmodels.TransakcijaViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -200,6 +206,27 @@ fun SveTransakcijeView(
     var odIznosa by remember { mutableStateOf("") }
     var doIznosa by remember { mutableStateOf("") }
 
+    val context = LocalContext.current;
+    val calendar = Calendar.getInstance();
+
+    val year = calendar[Calendar.YEAR];
+    val month = calendar[Calendar.MONTH];
+    val day = calendar[Calendar.DAY_OF_MONTH];
+
+    val datePickerOd = DatePickerDialog(
+        context,
+        {_: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+            odDatumaTran = "$selectedDay-${selectedMonth+1}-$selectedYear"
+        }, year, month, day
+    )
+
+    val datePickerDo = DatePickerDialog(
+        context,
+        {_: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
+            doDatumaTran = "$selectedDay-${selectedMonth+1}-$selectedYear"
+        }, year, month, day
+    )
+
     var expanded by remember { mutableStateOf(false) }
     var focusManager = LocalFocusManager.current;
 
@@ -274,7 +301,11 @@ fun SveTransakcijeView(
                         value = odDatumaTran,
                         onValueChange = {},
                         readOnly = true,
-                        trailingIcon = { Icons.Filled.DateRange }
+                        trailingIcon = {
+                            IconButton(onClick = { datePickerOd.show() }) {
+                                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "DatePick")
+                            }
+                        }
                     )
                     FormTextField(
                         modifier = Modifier,
@@ -282,7 +313,11 @@ fun SveTransakcijeView(
                         value = doDatumaTran,
                         onValueChange = {},
                         readOnly = true,
-                        trailingIcon = { Icons.Filled.DateRange }
+                        trailingIcon = {
+                            IconButton(onClick = { datePickerDo.show() }) {
+                                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "DatePick")
+                            }
+                        }
                     )
                     FormTextField(
                         modifier = Modifier,

@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.foi.air.mbankingapp.data.context.Auth
 import hr.foi.air.mbankingapp.data.models.Transakcija
-import hr.foi.air.mbankingapp.data.models.TransakcijaFilter
 import hr.foi.air.mbankingapp.data.repository.TransakcijaRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.HttpException
-import retrofit2.http.Query
 
 class TransakcijaViewModel: ViewModel() {
     private val repository = TransakcijaRepository();
@@ -28,6 +26,7 @@ class TransakcijaViewModel: ViewModel() {
     var errorTranText = mutableStateOf("");
 
     var filter = mutableStateOf("");
+    var resetData = mutableStateOf(false);
 
     fun loadTransakcija(id: Int) {
         viewModelScope.launch {
@@ -78,6 +77,34 @@ class TransakcijaViewModel: ViewModel() {
                 };
 
                 Log.d("ErrorAPI", "transakcije exception: ${response}");
+                errorTran.value = true;
+                if (response != null) {
+                    errorTranText.value = response;
+                }
+            }
+        }
+    }
+
+    fun createTransakcija(racunIban: String, primateljIban: String, opisPlacanja: String, iznos: String, model: String, pozivNaBroj: String) {
+        viewModelScope.launch {
+            try {
+                transakcija.value = repository.createTransakcija(
+                    Transakcija(
+                        opisPlacanja = opisPlacanja,
+                        model =  model,
+                        pozivNaBroj = pozivNaBroj,
+                        iznos = iznos,
+                        platiteljIban = racunIban,
+                        primateljIban = primateljIban
+                    )
+                )
+                resetData.value = true;
+            } catch (ex: HttpException) {
+                val response = ex.response()?.errorBody()?.string()?.let {
+                    JSONObject(JSONArray(JSONObject(it).getString("exception")).getString(0)).getString(("message"))
+                };
+
+                Log.d("ErrorAPI", "transakcija exception: ${response}");
                 errorTran.value = true;
                 if (response != null) {
                     errorTranText.value = response;

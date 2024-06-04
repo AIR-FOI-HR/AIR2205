@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -56,7 +57,7 @@ fun TransakcijaView(
                 navigationIcon = {
                     IconButton(onClick = { onNavigateToBack() }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Natrag",
                             tint = Color.White
                         )
@@ -89,7 +90,7 @@ fun TransakcijaView(
                 NamedLabel(title = "Iznos", value = "${transakcija!!.iznos} €")
                 NamedLabel(title = "Model plaćanja", value = transakcija!!.model)
                 NamedLabel(title = "Poziv na broj", value = transakcija!!.pozivNaBroj)
-                NamedLabel(title = "Datum transakcije", value = transakcija!!.datum)
+                NamedLabel(title = "Datum transakcije", value = transakcija?.datum ?: "")
             } else {
                 CircularProgressIndicator(
                     modifier = Modifier.fillMaxSize()

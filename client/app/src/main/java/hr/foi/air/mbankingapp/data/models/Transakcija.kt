@@ -8,7 +8,7 @@ data class Transakcija(
     @SerializedName("iznos") val iznos: String,
     @SerializedName("model") val model: String,
     @SerializedName("poziv_na_broj") val pozivNaBroj: String,
-    @SerializedName("datum") val datum: String,
+    @SerializedName("datum") val datum: String? = null,
     @SerializedName("platitelj_iban") val platiteljIban: String,
     @SerializedName("platitelj_vlasnik") val platiteljVlasnik: String? = "",
     @SerializedName("primatelj_iban") val primateljIban: String,

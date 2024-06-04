@@ -1,27 +1,28 @@
 package hr.foi.air.mbankingapp.ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,17 +36,18 @@ fun FormTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     readOnly: Boolean = false,
     trailingIcon: @Composable () -> Unit = {},
+    followUpText: String = ""
 ) {
     val focusManager = LocalFocusManager.current
 
     Row (modifier = modifier
         .padding(bottom = 15.dp)
         .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
-            modifier = modifier
-                    .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth().weight(2f),
             readOnly = readOnly,
             trailingIcon = trailingIcon,
             singleLine = true,
@@ -63,5 +65,13 @@ fun FormTextField(
             shape = RoundedCornerShape(12.dp),
             colors = TextFieldDefaults.textFieldColors(containerColor = Color.White)
         )
+        if (followUpText != "") {
+            Text(
+                modifier = Modifier.fillMaxWidth().weight(0.5f).padding(horizontal = 10.dp),
+                text = followUpText,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }

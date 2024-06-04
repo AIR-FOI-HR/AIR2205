@@ -39,6 +39,9 @@ fun HomeNavigation(
                 innerPadding = innerPadding,
                 onNavigateToTransakcija = { id ->
                     navControllerRoot.navigate("transakcija/$id")
+                },
+                onNavigateToNovaTransakcija = {
+                    navControllerRoot.navigate("transakcija/nova")
                 }
             )
         }

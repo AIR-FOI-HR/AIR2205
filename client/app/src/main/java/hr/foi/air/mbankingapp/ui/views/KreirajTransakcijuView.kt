@@ -54,6 +54,7 @@ import hr.foi.air.mbankingapp.ui.viewmodels.TransakcijaViewModel
 @Composable
 fun KreirajTransakcijuView(
     onNavigateToBack: () -> Unit,
+    qr: String?,
     racunViewModel: RacunViewModel = viewModel(),
     transakcijaViewModel: TransakcijaViewModel = viewModel()
 ) {
@@ -77,6 +78,18 @@ fun KreirajTransakcijuView(
     val context = LocalContext.current;
 
     LaunchedEffect(Unit) {
+        if (qr != null) {
+            var arrQr = qr.split(";")
+            if (arrQr.isEmpty()) {
+                Toast.makeText(context, "Neispravan QR kod.", Toast.LENGTH_SHORT).show()
+            } else {
+                primateljIban = arrQr.getOrNull(0) ?: "";
+                iznos = arrQr.getOrNull(1) ?: "";
+                opisPlacanja = arrQr.getOrNull(2) ?: "";
+                model = arrQr.getOrNull(3) ?: "";
+                pozivNaBroj = arrQr.getOrNull(4) ?: "";
+            }
+        }
         racunViewModel.loadRacuni()
     }
 
@@ -244,5 +257,5 @@ fun KreirajTransakcijuView(
 @Preview(showBackground = true)
 @Composable
 fun KreirajTransakcijuViewPreview() {
-    KreirajTransakcijuView({})
+    KreirajTransakcijuView({}, null)
 }

@@ -1,6 +1,10 @@
 package hr.foi.air.mbankingapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -14,6 +18,7 @@ import hr.foi.air.mbankingapp.ui.views.KreirajTransakcijuView
 import hr.foi.air.mbankingapp.ui.views.QrRacunView
 import hr.foi.air.mbankingapp.ui.views.RacunView
 import hr.foi.air.mbankingapp.ui.views.TransakcijaView
+import hr.foi.air.qr.composables.CameraView
 
 @Composable
 fun RootNavigation(navController: NavHostController) {
@@ -78,12 +83,31 @@ fun RootNavigation(navController: NavHostController) {
             )
         }
         composable(
-            route = "transakcija/nova"
+            route = "transakcija/nova/{qr}",
+            arguments = listOf(navArgument("qr") {
+                nullable = true
+                defaultValue = null
+                type = NavType.StringType
+            })
         ) { navBackStackEntry ->
             KreirajTransakcijuView (
+                qr = navBackStackEntry.arguments?.getString("qr") ?: null,
                 onNavigateToBack = {
+                    navBackStackEntry.savedStateHandle.remove<String>("qr")
                     if (navController.previousBackStackEntry != null) {
                         navController.navigateUp()
+                    }
+                }
+            )
+        }
+        composable(
+            route = "transakcija/skeniraj"
+        ) { navBackStackEntry ->
+            CameraView(
+                onSuccessfullScan = { data ->
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                        navController.navigate("transakcija/nova/$data")
                     }
                 }
             )

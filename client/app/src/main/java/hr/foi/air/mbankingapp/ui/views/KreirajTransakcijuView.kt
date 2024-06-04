@@ -1,5 +1,6 @@
 package hr.foi.air.mbankingapp.ui.views
 
+import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,27 +28,43 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.foi.air.mbankingapp.ui.composables.FormTextField
 import hr.foi.air.mbankingapp.ui.theme.Primary
+import hr.foi.air.mbankingapp.ui.viewmodels.RacunViewModel
+import hr.foi.air.mbankingapp.ui.viewmodels.TransakcijaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KreirajTransakcijuView(
-    onNavigateToBack: () -> Unit
+    onNavigateToBack: () -> Unit,
+    racunViewModel: RacunViewModel = viewModel(),
+    transakcijaViewModel: TransakcijaViewModel = viewModel()
 ) {
+    val racuni = racunViewModel.racuni.observeAsState();
+    var error by transakcijaViewModel.errorTran;
+    val errorText by transakcijaViewModel.errorTranText;
+
+    var resetData by transakcijaViewModel.resetData;
+
+    var stanjeRacuna by remember { mutableStateOf(0f) }
+
     var racunIban by remember { mutableStateOf("") }
     var primateljIban by remember { mutableStateOf("") }
     var opisPlacanja by remember { mutableStateOf("") }
@@ -56,7 +73,28 @@ fun KreirajTransakcijuView(
     var pozivNaBroj by remember { mutableStateOf("") }
 
     var expanded by remember { mutableStateOf(false) }
-    val focusManager = LocalFocusManager.current
+    val focusManager = LocalFocusManager.current;
+    val context = LocalContext.current;
+
+    LaunchedEffect(Unit) {
+        racunViewModel.loadRacuni()
+    }
+
+    if (error) {
+        Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
+        error = false;
+    }
+
+    if (resetData) {
+        racunIban = "";
+        primateljIban = "";
+        iznos = "";
+        opisPlacanja = "";
+        model = "";
+        pozivNaBroj = "";
+        Toast.makeText(context, "Transakcija je uspješno izvršena!", Toast.LENGTH_SHORT).show()
+        resetData = false;
+    }
 
     Scaffold(
         modifier = Modifier.pointerInput(Unit) {
@@ -124,14 +162,19 @@ fun KreirajTransakcijuView(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                 ) {
-                    DropdownMenuItem(
-                        text = { Text("Tekući račun - HR000000") },
-                        onClick = {
-                            //vrstaTran = "ISPLATA"
-                            expanded = false
-                        },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                    )
+                    if (racuni.value?.isNullOrEmpty() != true) {
+                        racuni.value!!.forEach{ racun ->
+                            DropdownMenuItem(
+                                text = { Text(racun.vrstaRacuna + " - " + racun.iban) },
+                                onClick = {
+                                    racunIban = racun.iban;
+                                    stanjeRacuna = racun.stanje;
+                                    expanded = false;
+                                },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            )
+                        }
+                    }
                 }
             }
             FormTextField(
@@ -176,7 +219,20 @@ fun KreirajTransakcijuView(
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = {
+                        if (stanjeRacuna < iznos.toFloat()) {
+                            Toast.makeText(context, "Nedovoljno sredstava na računu!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            transakcijaViewModel.createTransakcija(
+                                racunIban,
+                                primateljIban,
+                                opisPlacanja,
+                                iznos,
+                                model,
+                                pozivNaBroj
+                            )
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
                     Text(text = "Potvrdi")
                 }

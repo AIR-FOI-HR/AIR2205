@@ -90,7 +90,7 @@ fun TransakcijaView(
                 NamedLabel(title = "Iznos", value = "${transakcija!!.iznos} €")
                 NamedLabel(title = "Model plaćanja", value = transakcija!!.model)
                 NamedLabel(title = "Poziv na broj", value = transakcija!!.pozivNaBroj)
-                NamedLabel(title = "Datum transakcije", value = transakcija!!.datum)
+                NamedLabel(title = "Datum transakcije", value = transakcija?.datum ?: "")
             } else {
                 CircularProgressIndicator(
                     modifier = Modifier.fillMaxSize()

@@ -42,6 +42,9 @@ fun HomeNavigation(
                 },
                 onNavigateToNovaTransakcija = {
                     navControllerRoot.navigate("transakcija/nova")
+                },
+                onNavigateToSkeniraj = {
+                    navControllerRoot.navigate("transakcija/skeniraj")
                 }
             )
         }

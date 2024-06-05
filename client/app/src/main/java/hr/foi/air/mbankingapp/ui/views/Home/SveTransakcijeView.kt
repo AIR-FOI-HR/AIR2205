@@ -60,6 +60,7 @@ import hr.foi.air.mbankingapp.ui.composables.TransakcijaItem
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.theme.Secondary
 import hr.foi.air.mbankingapp.ui.viewmodels.TransakcijaViewModel
+import hr.foi.air.qr.composables.CameraView
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,6 +69,7 @@ fun SveTransakcijeView(
     innerPadding: PaddingValues,
     onNavigateToTransakcija: (Int) -> Unit,
     onNavigateToNovaTransakcija: () -> Unit,
+    onNavigateToSkeniraj: () -> Unit,
     viewModel: TransakcijaViewModel = viewModel()
 ) {
     val transakcije by viewModel.transakcije.observeAsState()
@@ -174,7 +176,7 @@ fun SveTransakcijeView(
                         onDismissRequest = { menuExpanded = false }
                     ) {
                         DropdownMenuItem(text = { Text("Novo plaćanje") }, onClick = { onNavigateToNovaTransakcija() })
-                        DropdownMenuItem(text = { Text("Skeniraj i plati") }, onClick = { /*TODO*/ })
+                        DropdownMenuItem(text = { Text("Skeniraj i plati") }, onClick = { onNavigateToSkeniraj() })
                         DropdownMenuItem(text = { Text("Kontakti") }, onClick = { /*TODO*/ })
                     }
                 }

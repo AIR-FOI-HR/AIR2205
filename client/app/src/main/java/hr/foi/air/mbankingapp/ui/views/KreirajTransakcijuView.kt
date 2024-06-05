@@ -45,10 +45,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.gson.JsonObject
 import hr.foi.air.mbankingapp.ui.composables.FormTextField
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.viewmodels.RacunViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.TransakcijaViewModel
+import org.json.JSONException
+import org.json.JSONObject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,17 +82,18 @@ fun KreirajTransakcijuView(
 
     LaunchedEffect(Unit) {
         if (qr != null) {
-            var arrQr = qr.split(";")
-            if (arrQr.isEmpty()) {
+            try {
+                var json = JSONObject(qr);
+                primateljIban = json.getString("primatelj");
+                iznos = json.getString("iznos");
+                opisPlacanja = json.getString("opis");
+                model = json.getString("model");
+                pozivNaBroj = json.getString("pozivNaBroj");
+            } catch (e: JSONException) {
                 Toast.makeText(context, "Neispravan QR kod.", Toast.LENGTH_SHORT).show()
-            } else {
-                primateljIban = arrQr.getOrNull(0) ?: "";
-                iznos = arrQr.getOrNull(1) ?: "";
-                opisPlacanja = arrQr.getOrNull(2) ?: "";
-                model = arrQr.getOrNull(3) ?: "";
-                pozivNaBroj = arrQr.getOrNull(4) ?: "";
             }
         }
+
         racunViewModel.loadRacuni()
     }
 

@@ -45,4 +45,21 @@ class RacunController {
         $response->getBody()->write($body);
         return $response;
     }
+
+    public function get_racun_from_tel_broj(Request $request, Response $response, string $tel_broj) : Response {
+        try {
+            $data = $this->repository->get_from_tel_broj($tel_broj);
+        } catch (ErrorException $ex) {
+            throw new \Slim\Exception\HttpInternalServerErrorException($request, message: $ex->getMessage());
+        }
+
+        if ($data == null) {
+            throw new \Slim\Exception\HttpNotFoundException($request, message: "Nije pronađen tekući račun korisnika s navedenim tel. brojem.");
+        }
+
+        $body = json_encode($data);
+
+        $response->getBody()->write($body);
+        return $response;
+    }
 }

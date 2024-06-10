@@ -15,4 +15,8 @@ class RacunRepository {
     suspend fun getRacun(iban: String): Racun {
         return racunService.getRacun(iban);
     }
+
+    suspend fun getRacunFromTelBroj(telBroj: String): Racun {
+        return racunService.getRacunFromTelBroj(telBroj);
+    }
 }

@@ -51,8 +51,10 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":qr")))
+    implementation(project(":kontakti"))
     val nav_version = "2.7.7"
 
+    implementation("com.google.accompanist:accompanist-permissions:0.35.1-alpha")
     implementation("com.google.zxing:core:3.5.1")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
     implementation("androidx.compose.material:material-icons-extended:1.6.7")

@@ -10,4 +10,7 @@ interface RacunService {
 
     @GET("racuni/{iban}")
     suspend fun getRacun(@Path("iban") iban: String) : Racun
+
+    @GET("racuni/telbroj/{tel_broj}")
+    suspend fun getRacunFromTelBroj(@Path("tel_broj") telBroj: String) : Racun
 }

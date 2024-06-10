@@ -1,5 +1,7 @@
 package hr.foi.air.mbankingapp.ui.navigation
 
+import android.Manifest
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -12,30 +14,39 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 import hr.foi.air.mbankingapp.ui.views.Home.HomeRootView
+import hr.foi.air.mbankingapp.ui.views.KontaktiView
 import hr.foi.air.mbankingapp.ui.views.KreirajTransakcijuView
 import hr.foi.air.mbankingapp.ui.views.QrRacunView
 import hr.foi.air.mbankingapp.ui.views.RacunView
 import hr.foi.air.mbankingapp.ui.views.TransakcijaView
 import hr.foi.air.qr.composables.CameraView
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun RootNavigation(navController: NavHostController) {
     val registerViewModel: RegisterViewModel = viewModel()
@@ -99,17 +110,24 @@ fun RootNavigation(navController: NavHostController) {
             )
         }
         composable(
-            route = "transakcija/nova/{qr}",
-            arguments = listOf(navArgument("qr") {
-                nullable = true
-                defaultValue = null
-                type = NavType.StringType
-            })
+            route = "transakcija/nova?qr={qr}&kontakt={kontakt}",
+            arguments = listOf(
+                navArgument("qr") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("kontakt") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                }
+            )
         ) { navBackStackEntry ->
             KreirajTransakcijuView (
-                qr = navBackStackEntry.arguments?.getString("qr") ?: null,
+                qr = navBackStackEntry.arguments?.getString("qr"),
+                kontakt = navBackStackEntry.arguments?.getString("kontakt"),
                 onNavigateToBack = {
-                    navBackStackEntry.savedStateHandle.remove<String>("qr")
                     if (navController.previousBackStackEntry != null) {
                         navController.navigateUp()
                     }
@@ -150,12 +168,76 @@ fun RootNavigation(navController: NavHostController) {
                         onSuccessfullScan = { data ->
                             if (navController.previousBackStackEntry != null) {
                                 navController.navigateUp()
-                                navController.navigate("transakcija/nova/$data")
+                                navController.navigate("transakcija/nova?qr=$data")
                             }
                         }
                     )
                 }
             }
+        }
+        composable(
+            route = "kontakti"
+        ) {
+            val contactsPermissionState =
+                rememberPermissionState(Manifest.permission.READ_CONTACTS);
+
+            if (contactsPermissionState.status.isGranted) {
+                KontaktiView(
+                    onNavigateToBack = {
+                        if (navController.previousBackStackEntry != null) {
+                            navController.navigateUp()
+                        }
+                    },
+                    onNavigateToKreirajTransakciju = { data ->
+                        if (navController.previousBackStackEntry != null) {
+                            navController.navigateUp()
+                            navController.navigate("transakcija/nova?kontakt=$data")
+                        }
+                    }
+                )
+            } else if (contactsPermissionState.status.shouldShowRationale) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text("mBanking", fontWeight = FontWeight.Bold)
+                            },
+                            colors = TopAppBarDefaults.smallTopAppBarColors(
+                                containerColor = Primary,
+                                titleContentColor = Color.White
+                            ),
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    if (navController.previousBackStackEntry != null) {
+                                        navController.navigateUp()
+                                    }
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Natrag",
+                                        tint = Color.White
+                                    )
+                                }
+                            }
+                        )
+                    }
+                ) { innerPadding ->
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .padding(horizontal = 15.dp,  vertical = 10.dp)
+                    ) {
+                        Text(
+                            text = "Nije dopušteno čitanje podataka o kontaktima. Uključite dopuštenja u postavkama."
+                        )
+                    }
+                }
+            } else {
+                SideEffect {
+                    contactsPermissionState.run { launchPermissionRequest() }
+                }
+            }
+
         }
     }
 }

@@ -58,6 +58,7 @@ import org.json.JSONObject
 fun KreirajTransakcijuView(
     onNavigateToBack: () -> Unit,
     qr: String?,
+    kontakt: String?,
     racunViewModel: RacunViewModel = viewModel(),
     transakcijaViewModel: TransakcijaViewModel = viewModel()
 ) {
@@ -92,6 +93,8 @@ fun KreirajTransakcijuView(
             } catch (e: JSONException) {
                 Toast.makeText(context, "Neispravan QR kod.", Toast.LENGTH_SHORT).show()
             }
+        } else if (kontakt != null) {
+            primateljIban = kontakt;
         }
 
         racunViewModel.loadRacuni()
@@ -261,5 +264,5 @@ fun KreirajTransakcijuView(
 @Preview(showBackground = true)
 @Composable
 fun KreirajTransakcijuViewPreview() {
-    KreirajTransakcijuView({}, null)
+    KreirajTransakcijuView({}, null,null)
 }

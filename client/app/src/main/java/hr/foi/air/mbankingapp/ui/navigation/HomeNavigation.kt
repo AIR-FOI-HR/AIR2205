@@ -45,6 +45,9 @@ fun HomeNavigation(
                 },
                 onNavigateToSkeniraj = {
                     navControllerRoot.navigate("transakcija/skeniraj")
+                },
+                onNavigateToKontakti = {
+                    navControllerRoot.navigate("kontakti")
                 }
             )
         }

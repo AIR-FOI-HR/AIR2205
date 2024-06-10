@@ -1,4 +1,4 @@
-package hr.foi.air.skeniraj_i_plati
+package hr.foi.air.kontakti
 
 import org.junit.Test
 

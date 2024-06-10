@@ -70,6 +70,7 @@ fun SveTransakcijeView(
     onNavigateToTransakcija: (Int) -> Unit,
     onNavigateToNovaTransakcija: () -> Unit,
     onNavigateToSkeniraj: () -> Unit,
+    onNavigateToKontakti: () -> Unit,
     viewModel: TransakcijaViewModel = viewModel()
 ) {
     val transakcije by viewModel.transakcije.observeAsState()
@@ -177,7 +178,7 @@ fun SveTransakcijeView(
                     ) {
                         DropdownMenuItem(text = { Text("Novo plaćanje") }, onClick = { onNavigateToNovaTransakcija() })
                         DropdownMenuItem(text = { Text("Skeniraj i plati") }, onClick = { onNavigateToSkeniraj() })
-                        DropdownMenuItem(text = { Text("Kontakti") }, onClick = { /*TODO*/ })
+                        DropdownMenuItem(text = { Text("Kontakti") }, onClick = { onNavigateToKontakti() })
                     }
                 }
             }

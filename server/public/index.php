@@ -41,6 +41,7 @@ $app->group('/api/korisnici', function (RouteCollectorProxy $group) {
 $app->group('/api/racuni', function (RouteCollectorProxy $group) {
     $group->get('/{iban}', App\Controllers\RacunController::class . ':get_racun');
     $group->get('/korisnik/{kor_id}', App\Controllers\RacunController::class . ':get_racuni');
+    $group->get('/telbroj/{tel_broj}', App\Controllers\RacunController::class . ':get_racun_from_tel_broj');
 });
 
 $app->group('/api/transakcije', function (RouteCollectorProxy $group) {

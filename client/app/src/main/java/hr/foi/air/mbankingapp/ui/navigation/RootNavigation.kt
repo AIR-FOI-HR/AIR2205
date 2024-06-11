@@ -41,8 +41,10 @@ import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
 import hr.foi.air.mbankingapp.ui.views.Home.HomeRootView
 import hr.foi.air.mbankingapp.ui.views.KontaktiView
 import hr.foi.air.mbankingapp.ui.views.KreirajTransakcijuView
+import hr.foi.air.mbankingapp.ui.views.ObavijestView
 import hr.foi.air.mbankingapp.ui.views.QrRacunView
 import hr.foi.air.mbankingapp.ui.views.RacunView
+import hr.foi.air.mbankingapp.ui.views.SveObavijestiView
 import hr.foi.air.mbankingapp.ui.views.TransakcijaView
 import hr.foi.air.qr.composables.CameraView
 
@@ -64,7 +66,13 @@ fun RootNavigation(navController: NavHostController) {
         )
         composable("home_root") {
             HomeRootView(
-                navController
+                navController,
+                onNavigateToObavijest = { id ->
+                    navController.navigate("obavijest/$id")
+                },
+                onNavigateToSveObavijesti = {
+                    navController.navigate("obavijesti")
+                }
             )
         }
         composable(
@@ -225,7 +233,7 @@ fun RootNavigation(navController: NavHostController) {
                     Column(
                         modifier = Modifier
                             .padding(innerPadding)
-                            .padding(horizontal = 15.dp,  vertical = 10.dp)
+                            .padding(horizontal = 15.dp, vertical = 10.dp)
                     ) {
                         Text(
                             text = "Nije dopušteno čitanje podataka o kontaktima. Uključite dopuštenja u postavkama."
@@ -238,6 +246,33 @@ fun RootNavigation(navController: NavHostController) {
                 }
             }
 
+        }
+        composable(
+            route = "obavijest/{obav_id}",
+            arguments = listOf(navArgument("obav_id") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            ObavijestView(
+                obavijestId = navBackStackEntry.arguments?.getString("obav_id") ?: "0",
+                onNavigateToBack = {
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }
+            )
+        }
+        composable(
+            route = "obavijesti"
+        ) {
+            SveObavijestiView(
+                onNavigateToObavijest = { id ->
+                    navController.navigate("obavijest/$id");
+                },
+                onNavigateToBack = {
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }
+            )
         }
     }
 }

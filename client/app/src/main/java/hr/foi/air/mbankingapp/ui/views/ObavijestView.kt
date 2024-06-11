@@ -76,7 +76,6 @@ fun ObavijestView(
                     fontSize = 20.sp
                 )
                 Divider(
-                    color = Color.Black,
                     modifier = Modifier.padding(top = 5.dp, bottom = 10.dp)
                 )
                 Text(

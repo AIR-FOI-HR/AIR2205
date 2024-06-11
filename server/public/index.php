@@ -51,4 +51,11 @@ $app->group('/api/transakcije', function (RouteCollectorProxy $group) {
     $group->post('', App\Controllers\TransakcijaController::class . ':create_transakcija');
 });
 
+$app->group('/api/obavijesti', function (RouteCollectorProxy $group) {
+    $group->get('/{obav_id}', App\Controllers\ObavijestController::class . ':get_obavijest');
+    $group->get('/korisnik/{kor_id}', App\Controllers\ObavijestController::class . ':get_obavijesti_for_korisnik');
+    $group->post('', App\Controllers\ObavijestController::class . ':create_obavijest');
+    $group->patch('/procitaj', App\Controllers\ObavijestController::class . ':update_obavijest_procitano');
+});
+
 $app->run();

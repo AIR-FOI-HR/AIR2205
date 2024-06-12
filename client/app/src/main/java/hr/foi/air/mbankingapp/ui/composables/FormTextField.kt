@@ -69,7 +69,7 @@ fun FormTextField(
                 value = value,
                 onValueChange = onValueChange,
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color.White),
+                colors = TextFieldDefaults.textFieldColors(containerColor = Color.White, unfocusedLabelColor = Color.Black),
                 textStyle = with(LocalTextStyle) { current.copy(color = Color.Black) }
             )
         }

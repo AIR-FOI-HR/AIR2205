@@ -31,7 +31,8 @@ import hr.foi.air.mbankingapp.data.context.Theme
 
 @Composable
 fun PostavkeView(
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    onNavigateToPromjeniPin: () -> Unit
 ) {
     var darkTheme by Theme.isDarkTheme
 
@@ -62,7 +63,7 @@ fun PostavkeView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp)
-                .clickable { },
+                .clickable { onNavigateToPromjeniPin() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -86,5 +87,5 @@ fun PostavkeView(
 @Preview(showBackground = true)
 @Composable
 fun PostavkeViewPreview() {
-    PostavkeView(innerPadding = PaddingValues())
+    PostavkeView(innerPadding = PaddingValues(), {})
 }

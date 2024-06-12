@@ -58,7 +58,12 @@ fun HomeNavigation(
             }
         }
         composable("postavke") {
-            PostavkeView(innerPadding = innerPadding)
+            PostavkeView(
+                innerPadding = innerPadding,
+                onNavigateToPromjeniPin = {
+                    navControllerRoot.navigate("postavke/pin")
+                }
+            )
         }
     }
 }

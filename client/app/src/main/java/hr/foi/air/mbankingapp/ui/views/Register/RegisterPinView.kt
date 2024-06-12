@@ -109,7 +109,7 @@ fun RegisterPinView(
                             viewModel.register(context, onNavigationToLogin);
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                     Text(text = "Završi")
                 }
             }

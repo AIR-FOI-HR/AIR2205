@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import hr.foi.air.mbankingapp.data.context.Theme
 import hr.foi.air.mbankingapp.ui.navigation.HomeNavigation
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.theme.UnselectedColor
@@ -181,7 +182,7 @@ fun HomeRootView(
         },
         bottomBar = {
             NavigationBar(
-                containerColor = Primary,
+                containerColor = if (Theme.isDarkTheme.value) Primary else Primary,
             ) {
                 bottomBarItems.forEachIndexed { index, item ->
                     NavigationBarItem(

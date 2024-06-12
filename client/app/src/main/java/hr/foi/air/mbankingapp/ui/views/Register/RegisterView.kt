@@ -110,7 +110,7 @@ fun RegisterView(
                 )
                 Button(
                     onClick = { if(viewModel.checkUserData(context, ime, prezime, email, oib)) onNavigationToRegisterPin() },
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                     Text(text = "Registracija")
                 }
                 Row (modifier = Modifier

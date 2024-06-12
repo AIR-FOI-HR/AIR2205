@@ -99,7 +99,7 @@ fun LoginView(
             )
             Button(
                 onClick = { viewModel.login(context, email, pin, onSuccesfullLogin) },
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                 Text(text = "Prijava")
             }
             Row (modifier = Modifier

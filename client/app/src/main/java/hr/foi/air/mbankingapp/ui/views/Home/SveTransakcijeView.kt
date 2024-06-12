@@ -123,7 +123,6 @@ fun SveTransakcijeView(
             Text(filter, fontSize = 12.sp)
         }
         Divider(
-            color = Color.Black,
             modifier = Modifier.padding(top = 5.dp, bottom = 10.dp)
         )
         if (transakcije?.isEmpty() != true) {
@@ -170,7 +169,8 @@ fun SveTransakcijeView(
                     Icon(
                         imageVector = Icons.Filled.Add,
                         contentDescription = "Menu",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(36.dp),
+                        tint = Color.White
                     )
                     DropdownMenu(
                         expanded = menuExpanded,
@@ -333,12 +333,12 @@ fun SveTransakcijeView(
                                 doIznosa = "";
                                 isOpenedFilter = false;
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                            colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                             Text(text = "Filtriraj")
                         }
                         Button(
                             onClick = { isOpenedFilter = false },
-                            colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
+                            colors = ButtonDefaults.buttonColors(containerColor = Secondary, contentColor = Color.White)) {
                             Text(text = "Odustani")
                         }
                     }

@@ -157,7 +157,6 @@ fun KreirajTransakcijuView(
                 fontSize = 20.sp
             )
             Divider(
-                color = Color.Black,
                 modifier = Modifier.padding(top = 5.dp, bottom = 10.dp)
             )
             ExposedDropdownMenuBox(
@@ -253,7 +252,7 @@ fun KreirajTransakcijuView(
                             )
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                     Text(text = "Potvrdi")
                 }
             }

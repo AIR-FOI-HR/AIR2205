@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import hr.foi.air.mbankingapp.ui.views.Home.HomeView
+import hr.foi.air.mbankingapp.ui.views.Home.PostavkeView
 import hr.foi.air.mbankingapp.ui.views.Home.SveTransakcijeView
 
 @Composable
@@ -57,9 +58,15 @@ fun HomeNavigation(
             }
         }
         composable("postavke") {
-            Column (modifier = Modifier.padding(innerPadding)) {
-                Text("Postavke")
-            }
+            PostavkeView(
+                innerPadding = innerPadding,
+                onNavigateToPromjeniPin = {
+                    navControllerRoot.navigate("postavke/pin")
+                },
+                onNavigateToProfil = {
+                    navControllerRoot.navigate("postavke/profil")
+                }
+            )
         }
     }
 }

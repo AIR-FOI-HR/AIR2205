@@ -111,12 +111,12 @@ fun LoginRestoreFinalView(
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Button(
                     onClick = { onNavigateToLogin()  },
-                    colors = ButtonDefaults.buttonColors(containerColor = Secondary)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Secondary, contentColor = Color.White)) {
                     Text(text = "Odustani")
                 }
                 Button(
                     onClick = { viewModel.updatePin(context, kod, pin, pinPotvr, onNavigateToLogin) },
-                    colors = ButtonDefaults.buttonColors(containerColor = Primary)) {
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White)) {
                     Text(text = "Potvrdi")
                 }
             }

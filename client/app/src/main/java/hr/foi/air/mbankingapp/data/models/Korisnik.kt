@@ -6,7 +6,7 @@ data class Korisnik(
     @SerializedName("kor_id") val id: Int? = null,
     @SerializedName("ime") val ime: String? = "",
     @SerializedName("prezime") val prezime: String? = "",
-    @SerializedName("email") val email: String? = "",
+    @SerializedName("email") var email: String? = "",
     @SerializedName("oib") val oib: String? = "",
     @SerializedName("pin") var pin: String? = "",
     @SerializedName("kod") var kod: String? = "",

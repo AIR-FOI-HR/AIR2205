@@ -1,0 +1,32 @@
+package hr.foi.air.mbankingapp.data.repository
+
+import hr.foi.air.mbankingapp.data.api.RetrofitInstance
+import hr.foi.air.mbankingapp.data.models.Transakcija
+
+class TransakcijaRepository {
+    private val transakcijaService = RetrofitInstance.getTransakcijaService;
+
+    suspend fun getTransakcijeKorisnika(
+        id: Int,
+        numRows: Int = 0,
+        vrstaTran: String = "",
+        odDatuma: String = "",
+        doDatuma: String = "",
+        odIznosa: String = "",
+        doIznosa: String = "",
+    ) : List<Transakcija> {
+        return transakcijaService.getTransakcijeKorisnika(id, numRows, vrstaTran, odDatuma, doDatuma, odIznosa, doIznosa);
+    }
+
+    suspend fun getTransakcijeRacuna(iban: String) : List<Transakcija> {
+        return transakcijaService.getTransakcijeRacuna(iban);
+    }
+
+    suspend fun getTransakcija(id: Int) : Transakcija {
+        return transakcijaService.getTransakcija(id);
+    }
+
+    suspend fun  createTransakcija(transakcija: Transakcija) : Transakcija {
+        return transakcijaService.createTransakcija(transakcija);
+    }
+}

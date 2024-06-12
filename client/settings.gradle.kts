@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "mBankingApp"
 include(":app")
+include(":qr")
+include(":kontakti")

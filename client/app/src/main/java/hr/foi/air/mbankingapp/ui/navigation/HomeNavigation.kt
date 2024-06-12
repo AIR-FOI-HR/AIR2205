@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import hr.foi.air.mbankingapp.ui.views.BankomatiView
 import hr.foi.air.mbankingapp.ui.views.Home.HomeView
 import hr.foi.air.mbankingapp.ui.views.Home.PostavkeView
 import hr.foi.air.mbankingapp.ui.views.Home.SveTransakcijeView
@@ -53,9 +54,7 @@ fun HomeNavigation(
             )
         }
         composable("bankomati") {
-            Column (modifier = Modifier.padding(innerPadding)) {
-                Text("Bankomati")
-            }
+            BankomatiView(innerPadding)
         }
         composable("postavke") {
             PostavkeView(

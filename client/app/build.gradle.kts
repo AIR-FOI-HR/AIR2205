@@ -54,6 +54,9 @@ dependencies {
     implementation(project(":kontakti"))
     val nav_version = "2.7.7"
 
+    implementation("com.google.android.libraries.places:places:3.0.0")
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    implementation("com.google.maps.android:maps-compose:4.4.1")
     implementation("com.google.accompanist:accompanist-permissions:0.35.1-alpha")
     implementation("com.google.zxing:core:3.5.1")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.7")

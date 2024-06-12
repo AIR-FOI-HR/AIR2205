@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.foi.air.mbankingapp.data.context.Auth
-import hr.foi.air.mbankingapp.data.models.Korisnik
 import hr.foi.air.mbankingapp.data.repository.KorisnikRepository
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -40,6 +39,16 @@ class PostavkeViewModel: ViewModel() {
         updateKorisnik(pin = noviPin);
     }
 
+    fun setPodaci(telBroj: String, email: String) {
+        if (telBroj.isEmpty() || email.isEmpty()) {
+            error.value = true;
+            errorText.value = "Nisu popunjena sva polja!";
+            return;
+        }
+
+        updateKorisnik(telBroj = telBroj, email = email);
+    }
+
     fun updateKorisnik(
         pin: String? = null,
         telBroj: String? = null,
@@ -48,13 +57,12 @@ class PostavkeViewModel: ViewModel() {
         if (Auth.loggedUser == null) return;
         viewModelScope.launch {
             try {
+                Auth.loggedUser!!.pin = pin ?: Auth.loggedUser!!.pin;
+                Auth.loggedUser!!.telBroj = telBroj ?: Auth.loggedUser!!.telBroj;
+                Auth.loggedUser!!.email = email ?: Auth.loggedUser!!.email;
                 val korisnik = repository.updateUser(
                     Auth.loggedUser!!.id!!,
-                    Korisnik(
-                        pin =  pin ?: Auth.loggedUser!!.pin,
-                        telBroj = telBroj ?: Auth.loggedUser!!.telBroj,
-                        email = email ?: Auth.loggedUser!!.email
-                    )
+                    Auth.loggedUser!!
                 )
                 Auth.loggedUser = korisnik;
                 success.value = true;

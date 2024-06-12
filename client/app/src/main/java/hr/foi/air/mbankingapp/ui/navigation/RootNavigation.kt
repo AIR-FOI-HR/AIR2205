@@ -42,6 +42,7 @@ import hr.foi.air.mbankingapp.ui.views.Home.HomeRootView
 import hr.foi.air.mbankingapp.ui.views.KontaktiView
 import hr.foi.air.mbankingapp.ui.views.KreirajTransakcijuView
 import hr.foi.air.mbankingapp.ui.views.ObavijestView
+import hr.foi.air.mbankingapp.ui.views.ProfilView
 import hr.foi.air.mbankingapp.ui.views.PromjenaPinaView
 import hr.foi.air.mbankingapp.ui.views.QrRacunView
 import hr.foi.air.mbankingapp.ui.views.RacunView
@@ -279,6 +280,17 @@ fun RootNavigation(navController: NavHostController) {
             route = "postavke/pin"
         ) {
             PromjenaPinaView(
+                onNavigateToBack = {
+                    if (navController.previousBackStackEntry != null) {
+                        navController.navigateUp()
+                    }
+                }
+            )
+        }
+        composable(
+            route = "postavke/profil"
+        ) {
+            ProfilView(
                 onNavigateToBack = {
                     if (navController.previousBackStackEntry != null) {
                         navController.navigateUp()

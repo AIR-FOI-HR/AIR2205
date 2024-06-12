@@ -62,6 +62,9 @@ fun HomeNavigation(
                 innerPadding = innerPadding,
                 onNavigateToPromjeniPin = {
                     navControllerRoot.navigate("postavke/pin")
+                },
+                onNavigateToProfil = {
+                    navControllerRoot.navigate("postavke/profil")
                 }
             )
         }

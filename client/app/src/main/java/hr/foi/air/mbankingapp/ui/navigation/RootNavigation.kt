@@ -35,6 +35,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import hr.foi.air.mbankingapp.data.repository.placanja.KontaktPlacanje
+import hr.foi.air.mbankingapp.data.repository.placanja.PlacanjeRepository
+import hr.foi.air.mbankingapp.data.repository.placanja.QrPlacanje
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.viewmodels.LoginViewModel
 import hr.foi.air.mbankingapp.ui.viewmodels.RegisterViewModel
@@ -174,14 +177,9 @@ fun RootNavigation(navController: NavHostController) {
                 }
             ) {innerPadding ->
                 Column(modifier = Modifier.padding(innerPadding)) {
-                    CameraView(
-                        onSuccessfullScan = { data ->
-                            if (navController.previousBackStackEntry != null) {
-                                navController.navigateUp()
-                                navController.navigate("transakcija/nova?qr=$data")
-                            }
-                        }
-                    )
+                    // POZIV MODULA
+                    var placanje: PlacanjeRepository = QrPlacanje()
+                    placanje.pozivPlacanja(navController = navController)
                 }
             }
         }
@@ -192,19 +190,9 @@ fun RootNavigation(navController: NavHostController) {
                 rememberPermissionState(Manifest.permission.READ_CONTACTS);
 
             if (contactsPermissionState.status.isGranted) {
-                KontaktiView(
-                    onNavigateToBack = {
-                        if (navController.previousBackStackEntry != null) {
-                            navController.navigateUp()
-                        }
-                    },
-                    onNavigateToKreirajTransakciju = { data ->
-                        if (navController.previousBackStackEntry != null) {
-                            navController.navigateUp()
-                            navController.navigate("transakcija/nova?kontakt=$data")
-                        }
-                    }
-                )
+                // POZIV MODULA
+                var placanje: PlacanjeRepository = KontaktPlacanje()
+                placanje.pozivPlacanja(navController = navController)
             } else if (contactsPermissionState.status.shouldShowRationale) {
                 Scaffold(
                     topBar = {

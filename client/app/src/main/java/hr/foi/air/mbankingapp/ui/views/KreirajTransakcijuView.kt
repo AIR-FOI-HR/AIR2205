@@ -86,28 +86,20 @@ fun KreirajTransakcijuView(
     val context = LocalContext.current;
 
     LaunchedEffect(Unit) {
-        var placanje: PlacanjeRepository
-        var transakcija: Transakcija? = null
         if (qr != null) {
-            placanje = QrPlacanje()
-            transakcija = placanje.popuniPodatke(qr);
-            if (transakcija == null) {
+            try {
+                 var json = JSONObject(qr);
+                 primateljIban = json.getString("primatelj");
+                 iznos = json.getString("iznos");
+                 opisPlacanja = json.getString("opis");
+                 model = json.getString("model");
+                 pozivNaBroj = json.getString("pozivNaBroj");
+
+            } catch (e: JSONException) {
                 Toast.makeText(context, "Neispravan QR kod.", Toast.LENGTH_SHORT).show()
             }
         } else if (kontakt != null) {
-            placanje = KontaktPlacanje()
-            transakcija = placanje.popuniPodatke(kontakt)
-            if (transakcija == null) {
-                Toast.makeText(context, "Pogreška kod dohvata računa kontakta!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        if (transakcija != null) {
-            primateljIban = transakcija.primateljIban;
-            iznos = transakcija.iznos ?: "";
-            opisPlacanja = transakcija.opisPlacanja ?: "";
-            model = transakcija.model ?: "";
-            pozivNaBroj = transakcija.pozivNaBroj ?: "";
+            primateljIban = kontakt
         }
 
         racunViewModel.loadRacuni()

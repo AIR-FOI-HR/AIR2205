@@ -1,24 +1,24 @@
 package hr.foi.air.mbankingapp.data.repository.placanja
 
-import hr.foi.air.mbankingapp.data.models.Racun
-import hr.foi.air.mbankingapp.data.models.Transakcija
-import hr.foi.air.mbankingapp.data.repository.RacunRepository
-import kotlinx.coroutines.runBlocking
-import retrofit2.HttpException
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import hr.foi.air.mbankingapp.ui.views.KontaktiView
 
 class KontaktPlacanje : PlacanjeRepository {
-    override fun popuniPodatke(value: String): Transakcija? {
-        return Transakcija(null,
-            "Plaćanje prema kontaktu.",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            value,
-            null
+    @Composable
+    override fun pozivPlacanja(navController: NavHostController) {
+        KontaktiView(
+            onNavigateToBack = {
+                if (navController.previousBackStackEntry != null) {
+                    navController.navigateUp()
+                }
+            },
+            onNavigateToKreirajTransakciju = { data ->
+                if (navController.previousBackStackEntry != null) {
+                    navController.navigateUp()
+                    navController.navigate("transakcija/nova?kontakt=$data")
+                }
+            }
         )
     }
-
 }

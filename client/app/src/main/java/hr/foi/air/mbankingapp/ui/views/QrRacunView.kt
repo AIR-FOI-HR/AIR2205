@@ -60,7 +60,7 @@ fun QrRacunView(
         ) {
             Text(text = "QR kod za dijeljenje IBAN-a računa")
             Text(text = iban, fontWeight = FontWeight.Bold)
-            QrRacunImage(iban = iban)
+            QrRacunImage(iban = "{primatelj: $iban}")
         }
     }
 }

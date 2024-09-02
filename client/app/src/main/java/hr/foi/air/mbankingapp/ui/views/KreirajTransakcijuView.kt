@@ -46,6 +46,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.gson.JsonObject
+import hr.foi.air.mbankingapp.data.models.Transakcija
+import hr.foi.air.mbankingapp.data.repository.placanja.KontaktPlacanje
+import hr.foi.air.mbankingapp.data.repository.placanja.PlacanjeRepository
+import hr.foi.air.mbankingapp.data.repository.placanja.QrPlacanje
 import hr.foi.air.mbankingapp.ui.composables.FormTextField
 import hr.foi.air.mbankingapp.ui.theme.Primary
 import hr.foi.air.mbankingapp.ui.viewmodels.RacunViewModel
@@ -82,19 +86,28 @@ fun KreirajTransakcijuView(
     val context = LocalContext.current;
 
     LaunchedEffect(Unit) {
+        var placanje: PlacanjeRepository
+        var transakcija: Transakcija? = null
         if (qr != null) {
-            try {
-                var json = JSONObject(qr);
-                primateljIban = json.getString("primatelj");
-                iznos = json.getString("iznos");
-                opisPlacanja = json.getString("opis");
-                model = json.getString("model");
-                pozivNaBroj = json.getString("pozivNaBroj");
-            } catch (e: JSONException) {
+            placanje = QrPlacanje()
+            transakcija = placanje.popuniPodatke(qr);
+            if (transakcija == null) {
                 Toast.makeText(context, "Neispravan QR kod.", Toast.LENGTH_SHORT).show()
             }
         } else if (kontakt != null) {
-            primateljIban = kontakt;
+            placanje = KontaktPlacanje()
+            transakcija = placanje.popuniPodatke(kontakt)
+            if (transakcija == null) {
+                Toast.makeText(context, "Pogreška kod dohvata računa kontakta!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (transakcija != null) {
+            primateljIban = transakcija.primateljIban;
+            iznos = transakcija.iznos ?: "";
+            opisPlacanja = transakcija.opisPlacanja ?: "";
+            model = transakcija.model ?: "";
+            pozivNaBroj = transakcija.pozivNaBroj ?: "";
         }
 
         racunViewModel.loadRacuni()

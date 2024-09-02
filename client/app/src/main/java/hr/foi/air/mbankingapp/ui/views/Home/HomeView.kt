@@ -90,7 +90,7 @@ fun HomeView(
             LazyColumn {
                 items(transakcije!!) { transakcija ->
                         TransakcijaItem(
-                            primatelj = if (transakcija.iznos.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
+                            primatelj = if (transakcija.iznos!!.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
                             iznos = transakcija.iznos,
                             onClick = { onNavigateToTransakcija(transakcija.id!!) }
                         )

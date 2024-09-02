@@ -129,7 +129,7 @@ fun SveTransakcijeView(
             LazyColumn (Modifier.weight(1f)) {
                 items(transakcije!!) { transakcija ->
                     TransakcijaItem(
-                        primatelj = if (transakcija.iznos.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
+                        primatelj = if (transakcija.iznos!!.contains("+")) transakcija.platiteljVlasnik!! else transakcija.primateljVlasnik!!,
                         iznos = transakcija.iznos,
                         onClick = {
                             onNavigateToTransakcija(transakcija.id!!)

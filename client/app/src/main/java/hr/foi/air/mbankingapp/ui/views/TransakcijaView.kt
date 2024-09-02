@@ -84,11 +84,11 @@ fun TransakcijaView(
                 NamedLabel(title = "Primatelj", value = transakcija!!.primateljVlasnik ?: "")
                 NamedLabel(title = "Primatelj IBAN", value = transakcija!!.primateljIban)
                 NamedLabel(title = "Platitelj", value = transakcija!!.platiteljVlasnik ?: "")
-                NamedLabel(title = "Platitelj IBAN", value = transakcija!!.platiteljIban)
+                NamedLabel(title = "Platitelj IBAN", value = transakcija!!.platiteljIban!!)
                 NamedLabel(title = "Opis plaćanja", value = transakcija!!.opisPlacanja)
                 NamedLabel(title = "Iznos", value = "${transakcija!!.iznos} €")
-                NamedLabel(title = "Model plaćanja", value = transakcija!!.model)
-                NamedLabel(title = "Poziv na broj", value = transakcija!!.pozivNaBroj)
+                NamedLabel(title = "Model plaćanja", value = transakcija!!.model!!)
+                NamedLabel(title = "Poziv na broj", value = transakcija!!.pozivNaBroj!!)
                 NamedLabel(title = "Datum transakcije", value = transakcija?.datum ?: "")
             } else {
                 CircularProgressIndicator(

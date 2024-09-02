@@ -62,6 +62,7 @@ fun KontaktiView(
     val errorRacunText by viewModel.errorRacunText;
 
     val context = LocalContext.current;
+    var telBroj: String = ""
 
     LaunchedEffect(Unit) {
         viewModel.loadContacts(context);
@@ -104,8 +105,11 @@ fun KontaktiView(
             )
             if (kontakti?.isEmpty() != true) {
                 LazyColumn(Modifier.weight(1f)) {
-                    items(kontakti!!) { kontakt ->
-                        KontaktItem(kontakt = kontakt.name, { viewModel.fetchRacun(kontakt.phoneNumber) })
+                    items(kontakti!!) {
+                        kontakt -> KontaktItem(kontakt = kontakt.name) {
+                            viewModel.fetchRacun(kontakt.phoneNumber);
+                            telBroj = kontakt.phoneNumber
+                        }
                     }
                 }
             } else {
